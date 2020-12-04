@@ -373,8 +373,6 @@ h1, h2, h3, h4, h5, h6 {
   background: #1bbd36;
 }
 
-
-
 /*--------------------------------------------------------------
 # Sections General
 --------------------------------------------------------------*/
@@ -716,10 +714,93 @@ section {
   height: 300px;
 }
 
+/* # Portfolio Details */
+.portfolio-details {
+  padding: 40px 0;
+}
+
+.portfolio-details .portfolio-details-container {
+  position: relative;
+}
+
+.portfolio-details .portfolio-details-carousel {
+  position: relative;
+  z-index: 1;
+}
+
+.portfolio-details .portfolio-details-carousel .owl-nav, .portfolio-details .portfolio-details-carousel .owl-dots {
+  margin-top: 5px;
+  text-align: left;
+}
+
+.portfolio-details .portfolio-details-carousel .owl-dot {
+  display: inline-block;
+  margin: 0 10px 0 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ddd !important;
+}
+
+.portfolio-details .portfolio-details-carousel .owl-dot.active {
+  background-color: #1bbd36 !important;
+}
+
+.portfolio-details .portfolio-info {
+  padding: 30px;
+  position: absolute;
+  right: 0;
+  bottom: -70px;
+  background: #fff;
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+.portfolio-details .portfolio-info h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.portfolio-details .portfolio-info ul {
+  list-style: none;
+  padding: 0;
+  font-size: 15px;
+}
+
+.portfolio-details .portfolio-info ul li + li {
+  margin-top: 10px;
+}
+
+.portfolio-details .portfolio-description {
+  padding-top: 50px;
+}
+
+.portfolio-details .portfolio-description h2 {
+  width: 50%;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.portfolio-details .portfolio-description p {
+  padding: 0 0 0 0;
+}
+
+@media (max-width: 768px) {
+  .portfolio-details .portfolio-info {
+    position: static;
+    margin-top: 30px;
+  }
+}
+
+
 /*--------------------------------------------------------------
 # Clients
 --------------------------------------------------------------*/
-.clients .clients-wrap {
+/* .clients .clients-wrap {
   border-top: 1px solid #ececec;
   border-left: 1px solid #ececec;
 }
@@ -747,7 +828,7 @@ section {
   -webkit-filter: none;
   filter: none;
   transform: scale(1.1);
-}
+} */
 
 /*--------------------------------------------------------------
 # About Us
@@ -866,7 +947,7 @@ section {
 /*--------------------------------------------------------------
 # Our Skills
 --------------------------------------------------------------*/
-.skills .progress {
+/* .skills .progress {
   height: 50px;
   display: block;
   background: none;
@@ -896,12 +977,12 @@ section {
   height: 10px;
   transition: .9s;
   background-color: #1bbd36;
-}
+} */
 
 /*--------------------------------------------------------------
 # Features
 --------------------------------------------------------------*/
-.features .icon-box {
+/* .features .icon-box {
   display: flex;
   align-items: center;
   padding: 20px;
@@ -931,12 +1012,12 @@ section {
 
 .features .icon-box h3 a:hover {
   color: #1bbd36;
-}
+} */
 
 /*--------------------------------------------------------------
 # Pricing
 --------------------------------------------------------------*/
-.pricing .box {
+/* .pricing .box {
   padding: 20px;
   background: #fff;
   text-align: center;
@@ -1041,12 +1122,12 @@ section {
   padding: 1px 0 3px 0;
   background: #1bbd36;
   color: #fff;
-}
+} */
 
 /*--------------------------------------------------------------
 # Frequently Asked Questions
 --------------------------------------------------------------*/
-.faq .faq-list {
+/* .faq .faq-list {
   padding: 0 100px;
 }
 
@@ -1122,12 +1203,12 @@ section {
   .faq .faq-list {
     padding: 0;
   }
-}
+} */
 
 /*--------------------------------------------------------------
 # Testimonials
 --------------------------------------------------------------*/
-.testimonials .testimonial-item {
+/* .testimonials .testimonial-item {
   box-sizing: content-box;
   padding: 40px;
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08);
@@ -1178,7 +1259,7 @@ section {
   font-style: italic;
   margin: 15px 0 0 0;
   padding: 0;
-}
+} */
 
 /*--------------------------------------------------------------
 # Contact
@@ -1337,94 +1418,19 @@ section {
   }
 }
 
-/*--------------------------------------------------------------
-# Portfolio Details
---------------------------------------------------------------*/
-.portfolio-details {
-  padding: 40px 0;
-}
+/* Registration Form */
 
-.portfolio-details .portfolio-details-container {
-  position: relative;
-}
-
-.portfolio-details .portfolio-details-carousel {
-  position: relative;
-  z-index: 1;
-}
-
-.portfolio-details .portfolio-details-carousel .owl-nav, .portfolio-details .portfolio-details-carousel .owl-dots {
-  margin-top: 5px;
-  text-align: left;
-}
-
-.portfolio-details .portfolio-details-carousel .owl-dot {
-  display: inline-block;
-  margin: 0 10px 0 0;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: #ddd !important;
-}
-
-.portfolio-details .portfolio-details-carousel .owl-dot.active {
-  background-color: #1bbd36 !important;
-}
-
-.portfolio-details .portfolio-info {
-  padding: 30px;
-  position: absolute;
-  right: 0;
-  bottom: -70px;
-  background: #fff;
-  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
-  z-index: 2;
-}
-
-.portfolio-details .portfolio-info h3 {
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #eee;
-}
-
-.portfolio-details .portfolio-info ul {
-  list-style: none;
-  padding: 0;
-  font-size: 15px;
-}
-
-.portfolio-details .portfolio-info ul li + li {
-  margin-top: 10px;
-}
-
-.portfolio-details .portfolio-description {
-  padding-top: 50px;
-}
-
-.portfolio-details .portfolio-description h2 {
-  width: 50%;
-  font-size: 26px;
-  font-weight: 700;
-  margin-bottom: 20px;
-}
-
-.portfolio-details .portfolio-description p {
-  padding: 0 0 0 0;
-}
-
-@media (max-width: 768px) {
-  .portfolio-details .portfolio-info {
-    position: static;
-    margin-top: 30px;
-  }
+.fieldset-box{
+  background-color: #eeeeee;
+  margin: 20px;
+  padding: 50px;
 }
 
 /*--------------------------------------------------------------
+
 # Blog
 --------------------------------------------------------------*/
-.blog {
+/* .blog {
   padding: 40px 0 20px 0;
 }
 
@@ -1954,7 +1960,7 @@ section {
   padding-left: 5px;
   color: #aaaaaa;
   font-size: 14px;
-}
+} */
 
 /*--------------------------------------------------------------
 # Footer
@@ -1963,6 +1969,7 @@ section {
   color: #fff;
   font-size: 14px;
   background: #111;
+  margin: 10px 0 0 0;
 }
 
 #footer .footer-top {
@@ -2114,3 +2121,5 @@ section {
   color: #fff;
   text-decoration: none;
 }
+
+
