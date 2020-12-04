@@ -134,61 +134,61 @@
         <div class="section-title section-title2">
           <h2><strong>Registration Form</strong></h2>
         </div>
-<<<<<<< HEAD
-=======
-
->>>>>>> Start with this shit
 
         <div class="row mt-5 justify-content-center" data-aos="fade-up">
           <div class="col-lg-10">
             <form class="php-email-form" name="submit-to-google-sheet">
+              <fieldset class="fieldset-box">
               <div class="form-row">
                 <div class="col-md-6 form-group">
                   <input type="text" name="Name" class="form-control" id="Name" placeholder="Your Name" data-rule="minlen:4" value="" data-msg="Please enter at least 4 chars" required />
                   <div class="validate"></div>
                </div>
                 <div class="col-md-6 form-group">
-                  <input type="text" class="form-control" name="Father" id="Father" placeholder="Father Name"  value="" data-msg="Please Enter Father Name"  required/>
+                  <input type="text" class="form-control" name="Father" id="Father" placeholder="Father's Name"  value="" data-msg="Please Enter Father Name"  required/>
                   <div class="validate"></div>
                 </div>
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" name="Mother" id="Mother" placeholder="Mother Name" data-rule="minlen:4" value="" data-msg="Please Enter Father's Name"required />
+                <input type="text" class="form-control" name="Mother" id="Mother" placeholder="Mother's Name" data-rule="minlen:4" value="" data-msg="Please Enter Father's Name"required />
                 <div class="validate"></div>
               </div>
 
-              <div class="form-group">
-                <input type="number" class="form-control" name="Addhar" id="Addhar" placeholder="Addhar Number" data-rule="minlen:12" value="" data-msg="Please Enter Addhar Number"required />
-                <div class="validate"></div>
-              </div>
-
-              <div class="form-group">
+              <div class="form-row">
+              <div class="col-md-6 form-group">
                 <input type="date" class="form-control" name="Date" id="Date" placeholder="Date of birth" value="" data-msg="Please Enter Date of Birth"required />
                 <div class="validate"></div>
               </div>
 
-              <div class="form-group">
-                <input type="text" class="form-control" name="Higher" id="Higher" placeholder="Enter Higher Education" data-rule="minlen:4" value="" data-msg="Please Enter Higher Education"required />
-                <div class="validate"></div>
-              </div>
-              
-              <div class="form-group">
-                <input type="text" class="form-control" name="Address" id="Address" placeholder="Enter Your Address" data-rule="minlen:4" value="" data-msg="Please Enter Your Address"required />
-                <div class="validate"></div>
-              </div>
-
-              <div class="form-group">
-                <input type="text" class="form-control" name="Mobile" id="Mobile" placeholder="Enter Higher Mobile no." data-rule="minlen:4" value="" data-msg="Please Enter Mobile no."required />
-                <div class="validate"></div>
-              </div>
-
-              <div class="form-group">
+              <div class="col-md-6 form-group">
                 <label for="cars">Choose Gender:</label>
                 <select name="Gender" id="Gender">
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                   <option value="Other">Other</option>
                 </select>
+                <div class="validate"></div>
+              </div>
+            </div>
+            
+              <div class="form-group">
+                <input type="number" class="form-control" name="Addhar" id="Addhar" placeholder="Addhar Number" data-rule="minlen:12" value="" data-msg="Please Enter Addhar Number"required />
+                <div class="validate"></div>
+              </div>
+
+              <div class="form-group">
+                <input type="number" class="form-control" name="Mobile" id="Mobile" placeholder="Mobile Number" data-rule="minlen:4" value="" data-msg="Please Enter Mobile no."required />
+                <div class="validate"></div>
+              </div>
+
+              <div class="form-group">
+                <input type="number" class="form-control" name="Higher" id="Higher" placeholder="Your Higher Education %" data-rule="minlen:4" value="" data-msg="Please Enter Higher Education"required />
+                <div class="validate"></div>
+              </div>
+              
+              <div class="form-group">
+                <input type="text" class="form-control" name="Address" id="Address" placeholder="Enter Your Address" data-rule="minlen:4" value="" data-msg="Please Enter Your Address"required />
+                <div class="validate"></div>
               </div>
 
             <div class="form-group">
@@ -206,8 +206,9 @@
                 <div class="error-message" id="errormessage"></div>
                 <div class="sent-message" id="successmessage">Your message has been sent. Thank you!</div>
               </div>
-              <div class="text-center"><button class =" btn btn-success" type="submit">Send Message</button></div>
+              <div class="text-center"><button class =" btn btn-success" type="submit">Submit</button></div>
               <!-- <div class="text-center"><button id="button123" type="click">click EM</button></div> -->
+            </fieldset>
             </form>
     
           </div>
