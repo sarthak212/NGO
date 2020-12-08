@@ -1,0 +1,415 @@
+{{#if requestId}}
+<div class="modal"  tabindex="-1" role="dialog" style="padding-right: 12px; display: block;background-color:rgb(0,0,0,0.5)">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <ul class="nav nav-tabs card-header-tabs" role="tablist">
+          <li class="nav-item"><a class="nav-link active" href="#otp-tab" data-toggle="tab" role="tab"
+              aria-selected="true"><i class="czi-unlocked mr-2 mt-n1"></i>Verify Mobile Number</a>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-body tab-content py-4">
+        <form action="/customer/confirm" method="post" class="needs-validation tab-pane fade show active" autocomplete="off" novalidate id="signin-tab">
+          <div class="form-group">
+            <label for="si-email">Enter the OTP from your registered mobile number</label>
+            <input class="form-control" type="tel" name="pin" id="otp" placeholder="1234" required>
+            <input type="hidden" name="requestId" value="{{requestId}}" >
+            <div class="invalid-feedback">Please enter the OTP</div>
+            <div class="form-group">
+                  <label for="co-note">Enter password</label>
+                  <input class="form-control" id="shipPassword" name="shipPassword" id="co-note" rows="6"
+                   type="password" placeholder="Password"></input>
+              </div>
+          </div>
+          <button class="btn btn-primary btn-block btn-shadow"  type="submit">Verify</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{/if}}
+
+{{#if @root.session.customerPresent}}
+<main class="sidebar-fixed-enabled" style="background: #F6F9FC">
+  <section class="px-lg-3 pt-4">
+    <div class="px-3 pt-2">
+      <!-- Page title + breadcrumb-->
+      <nav class="mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb flex-lg-nowrap">
+          <li class="breadcrumb-item"><a class="text-nowrap" href="home-grocery-store.html"><i
+                class="czi-home"></i>Home</a></li>
+          <li class="breadcrumb-item text-nowrap active" aria-current="page">Checkout</li>
+        </ol>
+      </nav>
+      <!-- Content-->
+      <!-- Checkout form-->
+      <form action="/checkout_action" method="POST">
+        <div class="row no-gutters pb-5 mb-xl-3">
+          <!-- Delivery details-->
+          <div class="col-xl-6 mb-3">
+            <h1 class="h2 mb-4">Checkout</h1>
+            <h2 class="h5 mb-4">Your Information</h2>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="co-fn">First name <span class='text-danger'>*</span></label>
+                  <input class="form-control" id="shipFirstname" name="shipFirstname" placeholder="First name"
+                    value="{{@root.session.customerFirstname}}" disabled>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="co-ln">Last name <span class='text-danger'>*</span></label>
+                  <input class="form-control" id="shipLastname" name="shipLastname" placeholder="Last name"
+                    value="{{@root.session.customerLastname}}" disabled>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="co-ln">Phone number <span class='text-danger'>*</span></label>
+                  <input class="form-control" id="shipPhoneNumber" name="shipPhoneNumber" placeholder="Phone number"
+                    value="{{@root.session.customerPhone}}" disabled>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="co-fn">Email address</label>
+                  <input class="form-control" id="shipEmail" name="shipEmail" placeholder="Email address"
+                    value="{{@root.session.customerEmail}}" disabled>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="co-address">Address <span class='text-danger'>*</span></label>
+                  <input class="form-control" id="shipAddr1" name="shipAddr1" placeholder="Address 1"
+                    value="{{@root.session.customerAddress1}}" disabled>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="co-ln">State <span class='text-danger'>*</span></label>
+                  <input class="form-control" id="shipState" name="shipState" placeholder="State"
+                    value="{{@root.session.customerState}}" disabled>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="co-fn">Pin Code <span class='text-danger'>*</span></label>
+                  <input class="form-control" id="shipPostcode" name="shipPostcode" placeholder="Pin code"
+                    value="{{@root.session.customerPostcode}}" disabled>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="co-note">Order note</label>
+                  <textarea class="form-control" name="message" id="co-note" rows="6"
+                    placeholder="Please write here any additional information..." disabled></textarea>
+                </div>
+              </div>
+            
+            </div>
+            <div class="rounded-lg border p-4 my-3">
+              <h2 class="h6 pb-2">Do you have a coupon code?</h2>
+              <div class="d-flex">
+                <input class="form-control mr-3" type="text" placeholder="Coupon code">
+                <button class="btn btn-outline-primary" type="button">Apply code</button>
+              </div>
+            </div>
+          </div>
+          <!-- Order summary + payment-->
+          <div class="col-xl-5 offset-xl-1 mb-3 mtr-8">
+            <div class="bg-light rounded-lg py-5 px-4 px-sm-5">
+              <h2 class="h5 pb-3">Your order</h2>
+              <div class="cartBodyWrapper">
+                <!-- Item-->
+                {{#each @root.session.cart}}
+                <div class="d-sm-flex justify-content-between align-items-center my-4 pb-3 border-bottom">
+                  <div class="media media-ie-fix d-block d-sm-flex align-items-center text-center text-sm-left">
+                    <a class="d-inline-block mx-auto mr-sm-4" href="/product/{{this.link}}" style="width: 5rem;">
+                      {{#if productImage}}
+                      <img src="{{this.productImage.[0].path}}" alt="{{this.title}} product image"></a>
+                    {{else}}
+                    <img src="/uploads/placeholder.png" alt="{{this.title}} product image"></a>
+                    {{/if}}
+                    <div class="media-body pt-2">
+                      <h3 class="product-title font-size-base mb-1"><a href="/product/{{this.link}}">{{this.title}}</a>
+                      </h3>
+                      <div class="font-size-lg text-accent">
+                        {{currencySymbol @root.config.currencySymbol}}
+                        <span>{{formatAmount this.totalItemPrice}}</div>
+                    </div>
+                  </div>
+                  <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 9rem;">
+                    <div class="form-group mb-0">
+                      <label class="font-weight-medium" for="quantity1">Quantity</label>
+                      {{#ifCond @root.cartReadOnly '!=' true}}
+                      <div class="cart-quantity">
+                        <button class="btn-qty-minus" type="button"><i class="fas fa-minus"></i></button>
+                        <input type="number" class="cart-product-quantity text-center" data-cartid="{{@key}}"
+                          data-id="{{../this.productId}}" maxlength="2" value="{{../this.quantity}}">
+                        <button class="btn-qty-add" type="button"><i class="fas fa-plus"></i></button>
+                      </div>
+                      {{else}}
+                      <div class="col-4 col-md-6 col-lg-5 col-xl-7 no-pad-left mb-2">
+                      </div>
+                      {{/ifCond}}
+                    </div>
+                    <button data-cartid="{{@key}}" class="btn btn-link px-0 text-danger btn-delete-from-cart"
+                      type="button">
+                      <i class="czi-close-circle mr-2"></i>
+                      <span class="font-size-sm">Remove</span>
+                    </button>
+                  </div>
+                </div>
+                {{/each}}
+              </div>
+              {{#if @root.session.cart}}
+              <button id="empty-cart" class="btn btn-outline-danger btn-block cart-empty-align" type="button">
+                <i class="czi-trash font-size-base mr-2 cart-contents-shipping"></i>Empty cart</button>
+              {{/if}}
+            </div>
+
+
+
+            {{#if @root.session.cart}}
+            <ul class="list-unstyled font-size-sm pt-4 pb-2 px-5 border-bottom">
+              <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Subtotal:</span><span
+                  class="text-right font-weight-medium">{{currencySymbol @root.config.currencySymbol}}{{formatAmount @root.session.totalCartAmount}}</span>
+              </li>
+              {{#ifCond @root.session.totalCartShipping '>' 0}}
+              <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Delivery:</span><span
+                  class="text-right font-weight-medium">{{currencySymbol @root.config.currencySymbol}}{{formatAmount @root.session.totalCartShipping}}</span>
+              </li>
+              {{else}}
+              <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Delivery:</span><span
+                  class="text-right font-weight-medium">Free</span></li>
+              {{/ifCond}}
+              {{#ifCond @root.session.totalCartDiscount '>' 0}}
+              <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Discount:</span><span
+                  class="text-right font-weight-medium">{{currencySymbol @root.config.currencySymbol}}{{formatAmount @root.session.totalCartDiscount}}</span>
+              </li>
+              {{/ifCond}}
+            </ul>
+            {{/if}}
+            <h3 class="font-weight-normal text-center my-4 py-2">
+              {{currencySymbol @root.config.currencySymbol}}{{formatAmount @root.session.totalCartAmount}}</h3>
+            <div class="accordion box-shadow-sm mb-4" id="payment-methods">
+              <div class="card">
+                <div class="card-header py-3 px-3">
+                  <div class="custom-control custom-radio">
+                    <input class="custom-control-input" type="radio" name="license" id="payment-cash" checked>
+                    <label class="custom-control-label font-weight-medium text-dark" for="payment-cash"
+                      data-toggle="collapse" data-target="#cash">Cash on delivery<i
+                        class="czi-wallet text-muted font-size-lg align-middle mt-n1 ml-2"></i></label>
+                  </div>
+                </div>
+                <div class="" id="" data-parent="#payment-methods">
+                  <div class="card-body">
+                    <p class="font-size-sm mb-0">You can pay cash when you receive your order.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="pt-2">
+              {{!-- id="add-to-reg" type="submit"  --}}
+              <button class="btn btn-primary btn-block">Place Order</button>
+            </div>
+          </div>
+
+        </div>
+    </div>
+    </form>
+    </div>
+  </section>
+</main>
+
+{{else}}
+<main class="sidebar-fixed-enabled" style="background: #F6F9FC">
+  <section class="px-lg-3 pt-4">
+    <div class="px-3 pt-2">
+      <!-- Page title + breadcrumb-->
+      <nav class="mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb flex-lg-nowrap">
+          <li class="breadcrumb-item"><a class="text-nowrap" href="home-grocery-store.html"><i
+                class="czi-home"></i>Home</a></li>
+          <li class="breadcrumb-item text-nowrap active" aria-current="page">Checkout</li>
+        </ol>
+      </nav>
+      <!-- Content-->
+      <!-- Checkout form-->
+      <form action="/customer/register" method="POST">
+        <div class="row no-gutters pb-5 mb-xl-3">
+          <!-- Delivery details-->
+          <div class="col-xl-6 mb-3">
+            <h1 class="h2 mb-4">Checkout</h1>
+            <button class="btn col-2 btn-primary btn-shadow mb-3" href="#signin-modal" data-toggle="modal"
+              id="customerloginForm" type="submit">Login</button>
+            <h2 class="h5 mb-4">Fill Information</h2>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="co-fn">First name <span class='text-danger'>*</span></label>
+                  <input class="form-control" id="shipFirstname" name="shipFirstname" placeholder="First name"
+                    value="{{@root.session.customerFirstname}}" required>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="co-ln">Last name <span class='text-danger'>*</span></label>
+                  <input class="form-control" id="shipLastname" name="shipLastname" placeholder="Last name"
+                    value="{{@root.session.customerLastname}}" required>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="co-ln">Phone number <span class='text-danger'>*</span></label>
+                  <input class="form-control" id="shipPhoneNumber" name="shipPhoneNumber" placeholder="Phone number"
+                    value="{{@root.session.customerPhone}}" required>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="co-fn">Email address <span class='text-danger'>*</span></label>
+                  <input class="form-control" id="shipEmail" name="shipEmail" placeholder="Email address"
+                    value="{{@root.session.customerEmail}}" required>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="co-address">Address <span class='text-danger'>*</span></label>
+                  <input class="form-control" id="shipAddr1" name="shipAddr1" placeholder="Address 1"
+                    value="{{@root.session.customerAddress1}}" required>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="co-ln">State <span class='text-danger'>*</span></label>
+                  <input class="form-control" id="shipState" name="shipState" placeholder="State"
+                    value="{{@root.session.customerState}}" required>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="co-fn">Pin Code <span class='text-danger'>*</span></label>
+                  <input class="form-control" id="shipPostcode" name="shipPostcode" placeholder="Pin code"
+                    value="{{@root.session.customerPostcode}}" required>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="co-note">Order note</label>
+                  <textarea class="form-control" name="message" id="co-note" rows="6"
+                    placeholder="Please write here any additional information..."></textarea>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                
+                {{!-- <div class="custom-control custom-radio">
+                    <input class="custom-control-input" type="radio" name="license" id="new-account">
+                    <label class="custom-control-label font-weight-medium text-dark" for="new-account"
+                      data-toggle="collapse" data-target="">Create New Account<i
+                        class="czi-wallet text-muted font-size-lg align-middle mt-n1 ml-2"></i></label>
+                  </div> --}}
+              </div>
+            </div>
+            <div class="rounded-lg border p-4 my-3">
+              <h2 class="h6 pb-2">Do you have a coupon code?</h2>
+              <div class="d-flex">
+                <input class="form-control mr-3" type="text" placeholder="Coupon code">
+                <button class="btn btn-outline-primary" type="button">Apply code</button>
+              </div>
+            </div>
+          </div>
+          <!-- Order summary + payment-->
+          <div class="col-xl-5 offset-xl-1 mb-3 mtr-8">
+            <div class="bg-light rounded-lg py-5 px-4 px-sm-5">
+              <h2 class="h5 pb-3">Your order</h2>
+              <div class="cartBodyWrapper">
+                <!-- Item-->
+                {{#each @root.session.cart}}
+                <div class="d-sm-flex justify-content-between align-items-center my-4 pb-3 border-bottom">
+                  <div class="media media-ie-fix d-block d-sm-flex align-items-center text-center text-sm-left">
+                    <a class="d-inline-block mx-auto mr-sm-4" href="/product/{{this.link}}" style="width: 5rem;">
+                      {{#if productImage}}
+                      <img src="{{this.productImage.[0].path}}" alt="{{this.title}} product image"></a>
+                    {{else}}
+                    <img src="/uploads/placeholder.png" alt="{{this.title}} product image"></a>
+                    {{/if}}
+                    <div class="media-body pt-2">
+                      <h3 class="product-title font-size-base mb-1"><a href="/product/{{this.link}}">{{this.title}}</a>
+                      </h3>
+                      <div class="font-size-lg text-accent">
+                        {{currencySymbol @root.config.currencySymbol}}
+                        <span>{{formatAmount this.totalItemPrice}}</div>
+                    </div>
+                  </div>
+                  <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 9rem;">
+                    <div class="form-group mb-0">
+                      <label class="font-weight-medium" for="quantity1">Quantity</label>
+                      {{#ifCond @root.cartReadOnly '!=' true}}
+                      <div class="cart-quantity">
+                        <button class="btn-qty-minus" type="button"><i class="fas fa-minus"></i></button>
+                        <input type="number" class="cart-product-quantity text-center" data-cartid="{{@key}}"
+                          data-id="{{../this.productId}}" maxlength="2" value="{{../this.quantity}}">
+                        <button class="btn-qty-add" type="button"><i class="fas fa-plus"></i></button>
+                      </div>
+                      {{else}}
+                      <div class="col-4 col-md-6 col-lg-5 col-xl-7 no-pad-left mb-2">
+                      </div>
+                      {{/ifCond}}
+                    </div>
+                    <button data-cartid="{{@key}}" class="btn btn-link px-0 text-danger btn-delete-from-cart"
+                      type="button">
+                      <i class="czi-close-circle mr-2"></i>
+                      <span class="font-size-sm">Remove</span>
+                    </button>
+                  </div>
+                </div>
+                {{/each}}
+              </div>
+              {{#if @root.session.cart}}
+              <button id="empty-cart" class="btn btn-outline-danger btn-block cart-empty-align" type="button">
+                <i class="czi-trash font-size-base mr-2 cart-contents-shipping"></i>Empty cart</button>
+              {{/if}}
+            </div>
+
+
+
+            {{#if @root.session.cart}}
+            <ul class="list-unstyled font-size-sm pt-4 pb-2 px-5 border-bottom">
+              <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Subtotal:</span><span
+                  class="text-right font-weight-medium">{{currencySymbol @root.config.currencySymbol}}{{formatAmount @root.session.totalCartAmount}}</span>
+              </li>
+              {{#ifCond @root.session.totalCartShipping '>' 0}}
+              <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Delivery:</span><span
+                  class="text-right font-weight-medium">{{currencySymbol @root.config.currencySymbol}}{{formatAmount @root.session.totalCartShipping}}</span>
+              </li>
+              {{else}}
+              <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Delivery:</span><span
+                  class="text-right font-weight-medium">Free</span></li>
+              {{/ifCond}}
+              {{#ifCond @root.session.totalCartDiscount '>' 0}}
+              <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Discount:</span><span
+                  class="text-right font-weight-medium">{{currencySymbol @root.config.currencySymbol}}{{formatAmount @root.session.totalCartDiscount}}</span>
+              </li>
+              {{/ifCond}}
+            </ul>
+            {{/if}}
+            <h3 class="font-weight-normal text-center my-4 py-2">
+              {{currencySymbol @root.config.currencySymbol}}{{formatAmount @root.session.totalCartAmount}}</h3>
+            <div class="pt-2">
+              {{!-- id="add-to-reg" type="submit"  --}}
+              <button class="btn btn-primary btn-block">Create Account</button>
+            </div>
+          </div>
+
+        </div>
+    </form>
+    </div>
+  </section>
+</main>
+{{/if}}
+<a class="btn-scroll-top" href="#top" data-scroll><span
+    class="btn-scroll-top-tooltip text-muted font-size-sm mr-2">Top</span><i class="btn-scroll-top-icon czi-arrow-up">
+  </i></a>
