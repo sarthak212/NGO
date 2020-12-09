@@ -19,7 +19,8 @@ $(document).ready(function () {
         $('#offcanvasClose').hide();
     }
 
-    $('#userSetupForm').validator().on('submit', function (e) {
+    $('#userSetupForm').on('submit', function (e) {
+        console.log("clicked");
         if (!e.isDefaultPrevented()) {
             e.preventDefault();
             $.ajax({
@@ -122,7 +123,7 @@ $(document).ready(function () {
             });
     });
 
-    $('#customerForgotten').validator().on('submit', function (e) {
+    $('#customerForgotten').on('submit', function (e) {
         if (!e.isDefaultPrevented()) {
             e.preventDefault();
             $.ajax({
@@ -149,7 +150,7 @@ $(document).ready(function () {
         $('#newCustomerPassword').prop('required', $('#createAccountCheckbox').prop('checked'));
     });
 
-    $('#checkoutInformation').validator().on('click', function (e) {
+    $('#checkoutInformation').on('click', function (e) {
         e.preventDefault();
         if ($('#shipping-form').validator('validate').has('.has-error').length === 0) {
             // Change route if customer to be saved for later
@@ -312,7 +313,7 @@ $(document).ready(function () {
     });
 
     // Customer saving own details
-    $('#customerSave').validator().on('click', function (e) {
+    $('#customerSave').on('click', function (e) {
         e.preventDefault();
         if ($('#customer-form').validator('validate').has('.has-error').length === 0) {
             $.ajax({
@@ -343,7 +344,7 @@ $(document).ready(function () {
     });
 
     // Address saving
-    $('#addressSave').validator().on('click', function (e) {
+    $('#addressSave').on('click', function (e) {
         e.preventDefault();
         if ($('#customer-form').validator('validate').has('.has-error').length === 0) {
             $.ajax({
@@ -374,7 +375,7 @@ $(document).ready(function () {
     });
 
     // Customer saving Password
-    $('#passwordSave').validator().on('click', function (e) {
+    $('#passwordSave').on('click', function (e) {
         e.preventDefault();
         if ($('#customer-form').validator('validate').has('.has-error').length === 0) {
             $.ajax({
