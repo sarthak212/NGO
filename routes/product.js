@@ -10,9 +10,9 @@ const path = require('path');
 const router = express.Router();
 var cloudinary = require('cloudinary').v2;
 cloudinary.config({ 
-    cloud_name: 'hoiuqedcf', 
-    api_key: '849651669432825', 
-    api_secret: 'FdsuCdcqhNFa-7vCU8GZfExKA_Y' 
+    cloud_name: 'du7p7keyx', 
+    api_key: '164318297713199', 
+    api_secret: '2g30sfZK2C3k_q5PElxXYhW1zhs' 
   });
 
 router.get('/admin/products/:page?', restrict, async (req, res, next) => {
