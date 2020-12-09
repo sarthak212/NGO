@@ -60,7 +60,7 @@
 
         <div class="row mt-5 justify-content-center" data-aos="fade-up">
           <div class="col-lg-10">
-            <form class="php-email-form" name="submit-to-google-sheet">
+            <form action="/customer/register" method ="POST">
               <div class="form-row">
                 <div class="col-md-6 form-group">
                   <input type="text" name="Name" class="form-control" id="Name" placeholder="Your Name" data-rule="minlen:4" value="" data-msg="Please enter at least 4 chars" required />
@@ -127,7 +127,7 @@
                 <div class="sent-message" id="successmessage">Your message has been sent. Thank you!</div>
               </div>
               <div class="text-center"><button type="submit">Send Message</button></div>
-              <div class="text-center"><button id="button123" type="click">click EM</button></div>
+              
             </form>
     <div class="form-group">
                 <form action="/pdfsubmit" method="post" enctype="multipart/form-data">
