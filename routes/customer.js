@@ -41,6 +41,47 @@ router.get('/customer/register', function(req, res) {
         showFooter: 'showFooter'
     });
 });
+router.post('/customer/register', async function(req,res)
+{
+    const config = req.app.config;
+    const db = req.app.db;
+    console.log("Everything looks good here");
+            const customerObj = {
+                firstName: req.body.Name,
+                fatherName: req.body.Father,
+                motherName: req.body.Mother,
+                Addhar: req.body.Addhar,
+                Address: req.body.Address,
+                phone: req.body.Mobile,
+                created: new Date()
+            };
+      
+            try{
+                const newCustomer = await db.customers.insertOne(customerObj);
+                indexCustomers(req.app)
+                .then(async () => {
+                    // Return the new customer
+                    const customerReturn = newCustomer.ops[0];
+        
+                    // Set the customer into the session
+                    req.session.customerPresent = true;
+                    req.session.customerId = customerReturn._id;
+                    req.session.customerFirstname = customerReturn.firstName;
+                    req.session.customerFathername = customerReturn.fatherName;
+                    req.session.customerMothername = customerReturn.motherName;
+                    req.session.customerAddhar = customerReturn.Addhar;
+                    req.session.customerPhone = customerReturn.phone;
+                    // we have a customer under that email so we compare the password
+                    res.redirect('/');
+                });
+            }catch(ex){
+                console.error(colors.red('Failed to insert customer: ', ex));
+                res.status(400).json({
+                    message: 'Customer creation failed.'
+                });
+            }
+
+});
 
 router.post('/customer/confirm', async (req, res)=> {
 	console.log('New verify request...');
