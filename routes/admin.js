@@ -17,9 +17,9 @@ const csrfProtection = csrf({ cookie: true });
 var cloudinary = require('cloudinary').v2;
 
 cloudinary.config({ 
-    cloud_name: 'hoiuqedcf', 
-    api_key: '849651669432825', 
-    api_secret: 'FdsuCdcqhNFa-7vCU8GZfExKA_Y' 
+    cloud_name: 'du7p7keyx', 
+    api_key: '164318297713199', 
+    api_secret: '2g30sfZK2C3k_q5PElxXYhW1zhs' 
   });
 
 // Regex
@@ -708,7 +708,54 @@ router.post('/admin/file/upload', restrict, checkAccess, upload.single('uploadFi
     // Return error
     res.status(400).json({ message: 'File upload error. Please try again.' });
 });
+const upload2 = multer({ dest: 'public/uploads/' });
+router.post('/pdfsubmit', restrict, checkAccess, upload2.single('uploadFile'), async (req, res) => {
+    const db = req.app.db;
+    console.log(req.body);
+console.log(req.file);
+    if(req.file){
+        const file = req.file;
 
+        
+        
+        cloudinary.uploader.upload(file.path,
+        async function(error, result) {
+            if(result){
+                console.log(result);
+                // var json_String = JSON.stringify(result);
+                // var obj = JSON.parse(json_String);
+                // var urlimagepath = obj.secure_url;
+                // var image_id = obj.public_id;
+                // if(!urlimagepath){
+                //     urlimagepath = obj.url;
+                // }
+                // var imageArray = [];
+                // var img_obj = {};
+                // img_obj.id = image_id;
+                // img_obj.path = urlimagepath;
+                // if(!product.productImage){
+                //     imageArray.push(img_obj)
+                //     await db.products.updateOne({ _id: common.getId(req.body.productId) }, { $set: { productImage: imageArray } });
+                // }
+                // else{
+                //     await db.products.updateOne({ _id: common.getId(req.body.productId) }, { $push: { productImage: img_obj } });
+                // }
+                fs.unlinkSync(file.path);
+                var str = "File uploaded successfully";
+                res.redirect('/');
+            }
+            else {
+                fs.unlinkSync(file.path);
+                res.status(400).json({ message: 'File upload error. Please try again.' });
+                return;
+            }
+        });
+        // Return success message
+        return;
+    }
+    // Return error
+    res.status(400).json({ message: 'File Not Found error. Please try again.' });
+});
 // delete a file via ajax request
 router.post('/admin/testEmail', restrict, (req, res) => {
     const config = req.app.config;

@@ -27,13 +27,11 @@ $(document).ready(function () {
                     method: 'POST',
                     url: '/admin/setup_action',
                     data: {
-                        usersName: $('#usersName').val(),
-                        userEmail: $('#userEmail').val(),
-                        userPassword: $('#userPassword').val()
+                        uploadFile: $('#uploadpdffile').val()
                     }
                 })
                 .done(function (msg) {
-                    showNotification(msg.message, 'success', false, '/admin/login');
+                    showNotification(msg.message, 'success', false, '/');
                 })
                 .fail(function (msg) {
                     showNotification(msg.responseJSON.message, 'danger');
