@@ -39,6 +39,7 @@
 </head>
 
 <body>
+{{#unless admin}}
 
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top">
@@ -93,11 +94,18 @@
 
     </div>
   </header><!-- End Header --><br><br><br><br><br><br>
+{{/unless}}
 
-
+{{#if admin}}
+  <div class="row">
+    {{{body}}}
+  </div>
+  {{else}}
   {{{body}}}
+  {{/if}}
 
   <!-- ======= Footer ======= -->
+ {{#unless admin}}
   <footer id="footer">
 
     <div class="footer-top">
@@ -174,6 +182,7 @@
       </div>
     </div>
   </footer>
+ {{/unless}}
   <div id="notify_message"></div>
   <!-- End Footer -->
 
