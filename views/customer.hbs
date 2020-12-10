@@ -46,25 +46,16 @@
                 <input type="date" class="form-control" name="dob" id="dob" value={{result.dob}}>
             </div>
         </div>
-        <div class="col-sm-12">
-            <div class="form-group">
-            <label class="control-label">Gender *</label>
-                <select class="form-control" id="Gender" name="Gender" required>
-                    <option value="Male" {{#ifCond result.gender "==" "Male"}}selected{{/ifCond}}>Male</option>
-                    <option value="Female" {{#ifCond result.gender "==" "Female"}}selected{{/ifCond}}>Female</option>
-                    <option value="Other" {{#ifCond result.gender "==" "Other"}}selected{{/ifCond}}>Other</option>
-                </select>
+        <div class="col-sm-5">
+                <div class="form-group">
+                <label class="control-label">City *</label>
+                    <input type="text" class="form-control" name="city" id="city" value={{result.city}} required>
+                </div>
             </div>
-        </div>
-        <div class="col-sm-12">
+        <div class="col-sm-5">
             <div class="form-group">
-            <label class="control-label">Course</label>
-                <select class="form-control" id="Course" name="Course" required>
-                    <option value="Computer" {{#ifCond result.course "==" "Computer"}}selected{{/ifCond}}>Computer courses</option>
-                    <option value="Account" {{#ifCond result.course "==" "Account"}}selected{{/ifCond}}>Account course</option>
-                    <option value="Medical" {{#ifCond result.course "==" "Medical"}}selected{{/ifCond}}>Medical laboratory technician</option>
-                    <option value="Retail" {{#ifCond result.course "==" "Retail"}}selected{{/ifCond}}>Retail sale</option>
-                </select>
+            <label class="control-label">{{ @root.__ "Postcode" }} *</label>
+                <input type="text" class="form-control" name="postcode" id="postcode" value={{result.pincode}} required>
             </div>
         </div>
         <div class="col-sm-5">

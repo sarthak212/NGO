@@ -1,0 +1,25 @@
+{
+    "$id": "Gallery",
+    "type": "object",
+    "properties": {
+        "productId": {
+            "type": "string"
+        },
+        "path": {
+            "type": "string",
+            "isNotEmpty": true
+        },
+        "isVideo": {
+            "type": "boolean",
+            "isNotEmpty": true
+        }
+    },
+    "errorMessage": {
+        "isNotEmpty": "This is my custom error message"
+    },
+    "required": [
+        "productId",
+        "path",
+        "isVideo"
+    ]
+}
