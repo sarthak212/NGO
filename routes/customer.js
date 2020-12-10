@@ -56,19 +56,28 @@ router.post('/customer/register',upload2.array('uploadFile'), async function(req
 {
     const config = req.app.config;
     const db = req.app.db;
-    console.log("Everything looks good here");
-            const customerObj = {
-                firstName: req.body.Name,
-                fatherName: req.body.Father,
-                motherName: req.body.Mother,
-                Addhar: req.body.Addhar,
-                Address: req.body.Address,
-                phone: req.body.Mobile,
-                state:req.body.State,
-                city:req.body.City,
-                pincode:req.body.Pincode,
-                created: new Date()
-            };
+    
+    var files = req.files;
+    if(files.length < 4) {
+        req.session.message = "All Files Required";
+        req.session.messageType = 'danger';
+        res.redirect('/customer/register');
+        return;
+    }
+    var customerObj = {
+        firstName: req.body.Name,
+        fatherName: req.body.Father,
+        motherName: req.body.Mother,
+        Addhar: req.body.Addhar,
+        Address: req.body.Address,
+        phone: req.body.Mobile,
+        dob: req.body.Date,
+        gender: req.body.Gender,
+        courser: req.body.Course,
+        created: new Date()
+    };
+    
+    
       
             try{
                 const newCustomer = await db.customers.insertOne(customerObj);
@@ -85,10 +94,88 @@ router.post('/customer/register',upload2.array('uploadFile'), async function(req
                     req.session.customerMothername = customerReturn.motherName;
                     req.session.customerAddhar = customerReturn.Addhar;
                     req.session.customerPhone = customerReturn.phone;
-                    req.session.customerState = customerReturn.state;
-                    req.session.customerPincode = customerReturn.pincode;
-                    req.session.customerCity = customerReturn.city;
-                    // we have a customer under that email so we compare the password
+                    var customerId = req.session.customerId;
+                    cloudinary.uploader.upload(files[0].path,
+                        async function(error, result) {
+                            if(result){
+                                console.log(result);
+                                var json_String = JSON.stringify(result);
+                                var obj = JSON.parse(json_String);
+                               
+                                console.log(files[0])
+                                var uploadobj = {
+                                    id: obj.public_id,
+                                    path : obj.secure_url,
+                                    type: obj.format
+                                };
+                                await db.customers.findOneAndUpdate({_id: getId(customerId)},{$set: {marksheet10: uploadobj}});
+                                fs.unlinkSync(files[0].path);
+                            }
+                            else {
+                                fs.unlinkSync(files[0].path);
+                            }
+                        });
+                    cloudinary.uploader.upload(files[1].path,
+                        async function(error, result) {
+                            if(result){
+                                console.log(result);
+                                var json_String = JSON.stringify(result);
+                                var obj = JSON.parse(json_String);
+                                
+                                console.log(files[1])
+                                var uploadobj = {
+                                    id: obj.public_id,
+                                    path : obj.secure_url,
+                                    type: obj.format
+                                };
+                                await db.customers.findOneAndUpdate({_id: getId(customerId)},{$set: {marksheet12: uploadobj}});
+                                fs.unlinkSync(files[1].path);
+                            }
+                            else {
+                                fs.unlinkSync(files[1].path);
+                            }
+                        });
+                    cloudinary.uploader.upload(files[2].path,
+                        async function(error, result) {
+                            if(result){
+                                console.log(result);
+                                var json_String = JSON.stringify(result);
+                                var obj = JSON.parse(json_String);
+                                
+                                console.log(files[2])
+                                var uploadobj = {
+                                    id: obj.public_id,
+                                    path : obj.secure_url,
+                                    type: obj.format
+                                };
+                                await db.customers.findOneAndUpdate({_id: getId(customerId)},{$set: {photo: uploadobj}});
+                                fs.unlinkSync(files[2].path);
+                            }
+                            else {
+                                fs.unlinkSync(files[2].path);
+                            }
+                        });
+                    cloudinary.uploader.upload(files[3].path,
+                        async function(error, result) {
+                            if(result){
+                                console.log(result);
+                                var json_String = JSON.stringify(result);
+                                var obj = JSON.parse(json_String);
+                                
+                                console.log(files[3])
+                                var uploadobj = {
+                                    id: obj.public_id,
+                                    path : obj.secure_url,
+                                    type: obj.format
+                                };
+                                await db.customers.findOneAndUpdate({_id: getId(customerId)},{$set: {sign: uploadobj}});
+                                fs.unlinkSync(files[3].path);
+                            }
+                            else {
+                                fs.unlinkSync(files[3].path);
+                            }
+                        });
+                    
                     res.redirect('/');
                 });
             }catch(ex){
@@ -104,30 +191,6 @@ router.post('/customer/register',upload2.array('uploadFile'), async function(req
 router.get('/admin/gallery',async (req,res)=>
 {
     const db = req.app.db;
-
-  /*const product = await db.products.findOne({ _id: common.getId(req.params.id) });
-    const images = product.productImage;
-    if(!product){
-        // If API request, return json
-        if(req.apiAuthenticated){
-            res.status(400).json({ message: 'Product not found' });
-            return;
-        }
-        req.session.message = 'Product not found';
-        req.session.messageType = 'danger';
-        res.redirect('/admin/products');
-        return;
-    }
-
-    // Get variants
-    product.variants = await db.variants.find({ product: common.getId(req.params.id) }).toArray();
-
-    // If API request, return json
-    if(req.apiAuthenticated){
-        res.status(200).json(product);
-        return;
-    }
-*/
     res.render('gallery', {
         title: 'Edit product',
         admin: true,
@@ -138,6 +201,67 @@ router.get('/admin/gallery',async (req,res)=>
         editor: true,
         helpers: req.handlebars.helpers
     });
+})
+router.post('/customer/gallery',upload2.array('uploadFile'),async (req,res)=>
+{
+    const config = req.app.config;
+    const db = req.app.db;
+    
+    var files = req.files;
+    if(files.length < 1) {
+        req.session.message = "All Files Required";
+        req.session.messageType = 'danger';
+        res.redirect('/customer/register');
+        return;
+    } 
+            try{
+                    cloudinary.uploader.upload(files[0].path,
+                        async function(error, result) {
+                            if(result){
+                                console.log(result);
+                                var json_String = JSON.stringify(result);
+                                var obj = JSON.parse(json_String);
+                                
+                                console.log(files[0])
+                                var uploadobj = {
+                                    id: obj.public_id,
+                                    path : obj.secure_url,
+                                    type: obj.format,
+                                    isVideo:false
+                                };
+                                await db.gallerys.insertOne(uploadobj);
+                                fs.unlinkSync(files[0].path);
+                            }
+                            else {
+                                fs.unlinkSync(files[0].path);
+                            }
+                        });
+                    res.redirect('/');
+            }catch(ex){
+                console.error(colors.red('Failed to insert customer: ', ex));
+                res.status(400).json({
+                    message: 'Error uploading .'
+                });
+            }
+})
+
+router.post("/customer/youtube",async function(req,res)
+{
+    const config = req.app.config;
+    const db = req.app.db;
+     try{
+                var uploadobj = {
+                    path : req.body.link,
+                    isVideo:true
+                };
+                await db.gallerys.insertOne(uploadobj);
+                res.redirect('/admin/gallery');
+        }
+        catch(ex)
+        {
+            console.log(ex);
+        }
+res.redirect('/');
 })
 
 router.post('/customer/confirm', async (req, res)=> {

@@ -788,6 +788,24 @@ $(document).ready(function (){
         });
     });
 
+   $(document).on('click', '#uploadYoutube', function(e){
+        e.preventDefault();
+        // Upload file
+        $.ajax({
+            method: 'POST',
+            url: '/customer/youtube',
+            data: {
+                link: $('#youtube').val(),
+            }
+        })
+        .done(function(msg){
+            showNotification(msg.message, 'success', true);
+        })
+        .fail(function(msg){
+            showNotification(msg.responseJSON.message, 'danger');
+        });
+    });
+
     $('#global-search-value').on('keyup', (e) => {
         if($('#global-search-value').val() === ''){
             $('#global-search-results').empty();
