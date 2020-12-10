@@ -47,6 +47,17 @@ h1, h2, h3, h4, h5, h6 {
   background: #2ae149;
   transition: 0.3s ease-in-out;
 }
+#notify_message {
+  position: fixed;
+  display: none;
+  z-index: 9999;
+  padding-top: 10px;
+  height: 50px;
+  bottom: 0px;
+  width: 100%;
+  text-align: center;
+  font-size: 22px;
+}
 
 /*--------------------------------------------------------------
 # Disable AOS delay on mobile
