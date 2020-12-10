@@ -12,10 +12,19 @@ const {
     sendEmail,
     clearCustomer
 } = require('../lib/common');
+const multer = require('multer');
+const fs = require('fs');
 const rateLimit = require('express-rate-limit');
 const { indexCustomers } = require('../lib/indexing');
 const { validateJson } = require('../lib/schema');
 const { restrict } = require('../lib/auth');
+var cloudinary = require('cloudinary').v2;
+
+cloudinary.config({ 
+    cloud_name: 'du7p7keyx', 
+    api_key: '164318297713199', 
+    api_secret: '2g30sfZK2C3k_q5PElxXYhW1zhs' 
+  });
 
 //*********************************//
 
@@ -41,20 +50,67 @@ router.get('/customer/register', function(req, res) {
         showFooter: 'showFooter'
     });
 });
-router.post('/customer/register', async function(req,res)
+const upload2 = multer({ dest: 'public/uploads/' });
+router.post('/customer/register',upload2.array('uploadFile'), async function(req,res)
 {
     const config = req.app.config;
     const db = req.app.db;
-    console.log("Everything looks good here");
-            const customerObj = {
-                firstName: req.body.Name,
-                fatherName: req.body.Father,
-                motherName: req.body.Mother,
-                Addhar: req.body.Addhar,
-                Address: req.body.Address,
-                phone: req.body.Mobile,
-                created: new Date()
-            };
+    console.log(req.files);
+    console.log(req.body);
+    var files = req.files;
+    if(files.length < 4) {
+        req.session.message = "All Files Required";
+        req.session.messageType = 'danger';
+        res.redirect('/customer/register');
+        return;
+    }
+    var customerObj = {
+        firstName: req.body.Name,
+        fatherName: req.body.Father,
+        motherName: req.body.Mother,
+        Addhar: req.body.Addhar,
+        Address: req.body.Address,
+        phone: req.body.Mobile,
+        created: new Date()
+    };
+    var docx = ['marksheet10','marksheet12','photo','sign'];
+    for(var f = 0;f<4;f++){
+        cloudinary.uploader.upload(files[f].path,
+            async function(error, result) {
+                if(result){
+                    console.log(result);
+                    // var json_String = JSON.stringify(result);
+                    // var obj = JSON.parse(json_String);
+                    // var urlimagepath = obj.secure_url;
+                    // var image_id = obj.public_id;
+                    // if(!urlimagepath){
+                    //     urlimagepath = obj.url;
+                    // }
+                    // var imageArray = [];
+                    // var img_obj = {};
+                    // img_obj.id = image_id;
+                    // img_obj.path = urlimagepath;
+                    // if(!product.productImage){
+                    //     imageArray.push(img_obj)
+                    //     await db.products.updateOne({ _id: common.getId(req.body.productId) }, { $set: { productImage: imageArray } });
+                    // }
+                    // else{
+                    //     await db.products.updateOne({ _id: common.getId(req.body.productId) }, { $push: { productImage: img_obj } });
+                    // }
+                    
+                    customerObj[docx[f]] = {
+                        id: obj.public_id,
+                        path : obj.secure_url
+                    };
+                    fs.unlinkSync(files[f].path);
+                }
+                else {
+                    fs.unlinkSync(files[f].path);
+                    res.status(400).json({ message: 'File upload error. Please try again.' });
+                    return;
+                }
+            });
+    }
       
             try{
                 const newCustomer = await db.customers.insertOne(customerObj);
