@@ -648,7 +648,7 @@ router.post('/admin/file/upload', restrict, checkAccess, upload.single('uploadFi
         if(!product){
             // delete the temp file.
             fs.unlinkSync(file.path);
-
+            console.log("Error baba error aagyaa hai");
             // Return error
             res.status(400).json({ message: 'File upload error. Please try again.' });
             return;

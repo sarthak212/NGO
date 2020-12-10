@@ -219,5 +219,8 @@
 	"Descending": "Descending",
 	"Ascending": "Ascending",
 	"Select the order in which the products should be sorted.": "Select the order in which the products should be sorted.",
-	"Address": "Address"
+	"Address": "Address",
+	"Image": "Image",
+	"Video": "Video",
+	"Submit": "Submit"
 }

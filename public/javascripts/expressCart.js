@@ -50,7 +50,7 @@ $(document).ready(function () {
     });
 
     if ($('#productTags').length) {
-        $('#productTags').tokenfield();
+        $('#productTags');
     }
 
     $(document).on('click', '.dashboard_list', function (e) {

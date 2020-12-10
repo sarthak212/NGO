@@ -25,6 +25,18 @@ function showNotification(msg, type, reloadPage, redirect){
         }
     });
 }
+
+function slugify(str){
+    var $slug = '';
+    var trimmed = $.trim(str);
+    $slug = trimmed.replace(/[^a-z0-9-æøå]/gi, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .replace(/æ/gi, 'ae')
+    .replace(/ø/gi, 'oe')
+    .replace(/å/gi, 'a');
+    return $slug.toLowerCase();
+}
 $(document).ready(function (){
     
 
@@ -417,7 +429,7 @@ $(document).ready(function (){
 
     $(document).on('click', '#orderCreate', function(e){
         e.preventDefault();
-        if($('#createOrderForm').validator('validate').has('.has-error').length === 0){
+        if($('#createOrderForm').has('.has-error').length === 0){
             $.ajax({
                 method: 'POST',
                 url: '/admin/order/create',
@@ -482,7 +494,7 @@ $(document).ready(function (){
     // call update settings API
     $('#updateCustomer').on('click', function(e){
         e.preventDefault();
-        if($('#customer-form').validator('validate').has('.has-error').length === 0){
+        if($('#customer-form').has('.has-error').length === 0){
             $.ajax({
                 method: 'POST',
                 url: '/admin/customer/update',
@@ -767,6 +779,24 @@ $(document).ready(function (){
             contentType: false,
             cache: false,
             data: formData
+        })
+        .done(function(msg){
+            showNotification(msg.message, 'success', true);
+        })
+        .fail(function(msg){
+            showNotification(msg.responseJSON.message, 'danger');
+        });
+    });
+
+   $(document).on('click', '#uploadYoutube', function(e){
+        e.preventDefault();
+        // Upload file
+        $.ajax({
+            method: 'POST',
+            url: '/customer/youtube',
+            data: {
+                link: $('#youtube').val(),
+            }
         })
         .done(function(msg){
             showNotification(msg.message, 'success', true);

@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express');
 const router = express.Router();
+const common = require('../lib/common');
 const colors = require('colors');
 const randtoken = require('rand-token');
 const bcrypt = require('bcryptjs');
@@ -185,6 +186,83 @@ router.post('/customer/register',upload2.array('uploadFile'), async function(req
             }
 
 });
+
+
+router.get('/admin/gallery',async (req,res)=>
+{
+    const db = req.app.db;
+    res.render('gallery', {
+        title: 'Edit product',
+        admin: true,
+        session: req.session,
+        message: common.clearSessionValue(req.session, 'message'),
+        messageType: common.clearSessionValue(req.session, 'messageType'),
+        config: req.app.config,
+        editor: true,
+        helpers: req.handlebars.helpers
+    });
+})
+router.post('/customer/gallery',upload2.array('uploadFile'),async (req,res)=>
+{
+    const config = req.app.config;
+    const db = req.app.db;
+    
+    var files = req.files;
+    if(files.length < 1) {
+        req.session.message = "All Files Required";
+        req.session.messageType = 'danger';
+        res.redirect('/customer/register');
+        return;
+    } 
+            try{
+                    cloudinary.uploader.upload(files[0].path,
+                        async function(error, result) {
+                            if(result){
+                                console.log(result);
+                                var json_String = JSON.stringify(result);
+                                var obj = JSON.parse(json_String);
+                                
+                                console.log(files[0])
+                                var uploadobj = {
+                                    id: obj.public_id,
+                                    path : obj.secure_url,
+                                    type: obj.format,
+                                    isVideo:false
+                                };
+                                await db.gallerys.insertOne(uploadobj);
+                                fs.unlinkSync(files[0].path);
+                            }
+                            else {
+                                fs.unlinkSync(files[0].path);
+                            }
+                        });
+                    res.redirect('/');
+            }catch(ex){
+                console.error(colors.red('Failed to insert customer: ', ex));
+                res.status(400).json({
+                    message: 'Error uploading .'
+                });
+            }
+})
+
+router.post("/customer/youtube",async function(req,res)
+{
+    const config = req.app.config;
+    const db = req.app.db;
+     try{
+                var uploadobj = {
+                    path : req.body.link,
+                    isVideo:true
+                };
+                await db.gallerys.insertOne(uploadobj);
+                res.redirect('/admin/gallery');
+        }
+        catch(ex)
+        {
+            console.log(ex);
+        }
+res.redirect('/');
+})
 
 router.post('/customer/confirm', async (req, res)=> {
 	console.log('New verify request...');
@@ -528,12 +606,12 @@ router.post('/admin/customer/update', restrict, async (req, res) => {
     // Handle optional values
     if(req.body.password){ customerObj.password = bcrypt.hashSync(req.body.password, 10); }
 
-    const schemaResult = validateJson('editCustomer', customerObj);
+   /* const schemaResult = validateJson('editCustomer', customerObj);
     if(!schemaResult.result){
         console.log('errors', schemaResult.errors);
         res.status(400).json(schemaResult.errors);
         return;
-    }
+    } */
 
     // check for existing customer
     const customer = await db.customers.findOne({ _id: getId(req.body.customerId) });
