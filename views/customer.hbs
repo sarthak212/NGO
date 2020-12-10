@@ -1,6 +1,6 @@
 {{> partials/menu}}
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-    <form method="post" class="form-horizontal" id="customer-form" role="form" data-toggle="validator" novalidate="false">
+    <form method="post" class="form-horizontal row" id="customer-form" role="form" data-toggle="validator" novalidate="false">
         <div class="col-sm-12">
             <div class="page-header">
                 <div class="btn-group float-right" role="group" aria-label="Basic example">
@@ -12,55 +12,59 @@
         </div>
         <div class="col-sm-12">
             <div class="form-group">
-            <label class="control-label">Email *</label>            
-                <input type="text" class="form-control" name="email" id="email" value={{result.email}} required>
-            </div>
-        </div>
-        <div class="col-sm-5">
-            <div class="form-group">
-            <label class="control-label">{{ @root.__ "First name" }} *</label>
+            <label class="control-label">Name</label>            
                 <input type="text" class="form-control" name="firstName" id="firstName" value={{result.firstName}} required>
             </div>
         </div>
         <div class="col-sm-5">
             <div class="form-group">
             <label class="control-label">Father Name*</label>
-                <input type="text" class="form-control" name="lastName" id="lastName" value={{result.fatherName}} required>
+                <input type="text" class="form-control" name="fatherName" id="fatherName" value={{result.fatherName}} required>
             </div>
         </div>
         <div class="col-sm-12">
             <div class="form-group">
             <label class="control-label">Mother Name *</label>   
-                <input type="text" class="form-control" name="address1" id="address1" value={{result.motherName}} required>
+                <input type="text" class="form-control" name="motherName" id="motherName" value={{result.motherName}} required>
             </div>
         </div>
         <div class="col-sm-12">
             <div class="form-group">
             <label class="control-label">Address</label>
-                <input type="text" class="form-control" name="address2" id="address2" value={{result.Address}}>
+                <input type="text" class="form-control" name="address" id="address" value={{result.Address}}>
             </div>
         </div>
         <div class="col-sm-12">
             <div class="form-group">
-            <label class="control-label">{{ @root.__ "Country" }} *</label>
-                <select class="form-control" id="country" name="country" required>
-                    <option value="" disabled selected>Select Country</option>
-                    {{#each countryList}}
-                    <option {{selectState this @root.result.country}} value="{{this}}">{{this}}</option>
-                    {{/each}}
+            <label class="control-label">Aadhar</label>
+                <input type="text" class="form-control" name="Addhar" id="Addhar" value={{result.Addhar}}>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+            <label class="control-label">DOB</label>
+                <input type="date" class="form-control" name="dob" id="dob" value={{result.dob}}>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+            <label class="control-label">Gender *</label>
+                <select class="form-control" id="Gender" name="Gender" required>
+                    <option value="Male" {{#ifCond result.gender "==" "Male"}}selected{{/ifCond}}>Male</option>
+                    <option value="Female" {{#ifCond result.gender "==" "Female"}}selected{{/ifCond}}>Female</option>
+                    <option value="Other" {{#ifCond result.gender "==" "Other"}}selected{{/ifCond}}>Other</option>
                 </select>
             </div>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-12">
             <div class="form-group">
-            <label class="control-label">{{ @root.__ "State" }} *</label>
-                <input type="text" class="form-control" name="state" id="state" value={{result.state}} required>
-            </div>
-        </div>
-        <div class="col-sm-5">
-            <div class="form-group">
-            <label class="control-label">{{ @root.__ "Postcode" }} *</label>
-                <input type="text" class="form-control" name="postcode" id="postcode" value={{result.postcode}} required>
+            <label class="control-label">Course</label>
+                <select class="form-control" id="Course" name="Course" required>
+                    <option value="Computer" {{#ifCond result.course "==" "Computer"}}selected{{/ifCond}}>Computer courses</option>
+                    <option value="Account" {{#ifCond result.course "==" "Account"}}selected{{/ifCond}}>Account course</option>
+                    <option value="Medical" {{#ifCond result.course "==" "Medical"}}selected{{/ifCond}}>Medical laboratory technician</option>
+                    <option value="Retail" {{#ifCond result.course "==" "Retail"}}selected{{/ifCond}}>Retail sale</option>
+                </select>
             </div>
         </div>
         <div class="col-sm-5">
@@ -69,19 +73,54 @@
                 <input type="text" class="form-control" name="phone" id="phone" value={{result.phone}} required>
             </div>
         </div>
-     <!--   <div class="col-sm-5">
-            <div class="form-group">
-            <label class="control-label">{{ @root.__ "Password" }}</label>
-                <input type="password" class="form-control" name="password" id="password">
-                <p class="help-block">Only populate if wanting to reset the customers password</p>
-            </div>
-        </div> -->
+
         <div class="col-sm-12">
             <div class="form-group">
             <label class="control-label">{{ @root.__ "Creation date" }}</label>
                 <input type="text" class="form-control" value="{{formatDate result.created "DD/MM/YYYY hh:mmA"}}" readonly>
             </div>
         </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label class="control-label">10th Marksheet</label>
+                {{#ifCond result.marksheet10.type "==" "pdf"}}
+                <iframe src="{{../result.marksheet10.path}}" style="width:600px; height:500px;" frameborder="0"></iframe>
+                {{else}}
+                <img src="{{../result.marksheet10.path}}" style="width: 500px; height: 500px" alt="">
+                {{/ifCond}}
+            </div>
+</div>
+<div class="col-sm-12">
+            <div class="form-group">
+                <label class="control-label">12th Marksheet</label>
+                {{#ifCond result.marksheet12.type "==" "pdf"}}
+                <iframe src="{{../result.marksheet12.path}}" style="width:600px; height:500px;" frameborder="0"></iframe>
+                {{else}}
+                <img src="{{../result.marksheet12.path}}" style="width: 500px; height: 500px" alt="">
+                {{/ifCond}}
+            </div>
+            </div>
+            <div class="col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Image</label>
+                {{#ifCond result.photo.type "==" "pdf"}}
+                <iframe src="{{../result.photo.path}}" style="width:600px; height:500px;" frameborder="0"></iframe>
+                {{else}}
+                <img src="{{../result.photo.path}}" style="width: 500px; height: 500px" alt="">
+                {{/ifCond}}
+            </div>
+            </div>
+            <div class="col-sm-12">
+            <div class="form-group">
+                <label class="control-label">Sign</label>
+                {{#ifCond result.sign.type "==" "pdf"}}
+                <iframe src="{{../result.sign.path}}" style="width:600px; height:500px;" frameborder="0"></iframe>
+                {{else}}
+                <img src="{{../result.sign.path}}" style="width: 500px; height: 500px" alt="">
+                {{/ifCond}}
+            </div>
+            </div>
+        
         <input type="hidden" name="customerId" id="customerId" value="{{result._id}}">
     </form>
 </main>
