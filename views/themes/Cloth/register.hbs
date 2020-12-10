@@ -60,7 +60,7 @@
 
         <div class="row mt-5 justify-content-center" data-aos="fade-up">
           <div class="col-lg-10">
-            <form action="/customer/register" method ="POST">
+            <form action="/customer/register" method ="POST" enctype="multipart/form-data">
               <div class="form-row">
                 <div class="col-md-6 form-group">
                   <input type="text" name="Name" class="form-control" id="Name" placeholder="Your Name" data-rule="minlen:4" value="" data-msg="Please enter at least 4 chars" required />
@@ -82,12 +82,7 @@
               </div>
 
               <div class="form-group">
-                <input type="date" class="form-control" name="Date" id="Date" placeholder="Date of birth" value="" data-msg="Please Enter Date of Birth"required />
-                <div class="validate"></div>
-              </div>
-
-              <div class="form-group">
-                <input type="text" class="form-control" name="Higher" id="Higher" placeholder="Enter Higher Education" data-rule="minlen:4" value="" data-msg="Please Enter Higher Education"required />
+                <input type="date" class="form-control" name="Date" id="Date" placeholder="Date of birth" value="" data-msg="Please Enter Date of Birth" required />
                 <div class="validate"></div>
               </div>
               
@@ -103,7 +98,7 @@
               
 
               <div class="form-group">
-                <label for="cars">Choose Gender:</label>
+                <label for="Gender">Choose Gender:</label>
                 <select name="Gender" id="Gender">
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
@@ -112,7 +107,7 @@
               </div>
 
             <div class="form-group">
-              <label for="cars">Choose a course:</label>
+              <label for="Course">Choose a course:</label>
                  <select name="Course" id="Course">
                     <option value="Computer">Computer courses</option>
                     <option value="Account">Account course</option>
@@ -120,20 +115,27 @@
                     <option value="Retail">Retail sale</option>
                   </select>
             </div>
-
-              <div class="mb-3">
-                <div class="loading" id="loading">Loading</div>
-                <div class="error-message" id="errormessage"></div>
-                <div class="sent-message" id="successmessage">Your message has been sent. Thank you!</div>
-              </div>
-              <div class="text-center"><button type="submit">Send Message</button></div>
+            <div class="form-group">
+              <label for="uploadpdffile">Upload 10th Marksheet</label>
+              <input type="file" id="uploadpdffile" name="uploadFile" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" />
+            </div>
+            <div class="form-group">
+              <label for="uploadpdffile2">Upload 12th Marksheet</label>
+              <input type="file" id="uploadpdffile2" name="uploadFile" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" />
+            </div>
+            <div class="form-group">
+              <label for="uploadpdffile3">Upload Photo</label>
+              <input type="file" id="uploadpdffile3" name="uploadFile" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" />
+            </div>
+            <div class="form-group">
+              <label for="uploadpdffile4">Upload Sign</label>
+              <input type="file" id="uploadpdffile4" name="uploadFile" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" />
+            </div>
+              
+              <div class="text-center"><button class="btn btn-primary" type="submit">Submit</button></div>
               
             </form>
-    <div class="form-group">
-                <form action="/pdfsubmit" method="post" enctype="multipart/form-data">
-                <input type="file" id="uploadpdffile" name="uploadFile" accept="application/pdf" />
-                <button type="submit" id="submitpdf">Submit</button></form>
-              </div>
+    
           </div>
         
         </div>
