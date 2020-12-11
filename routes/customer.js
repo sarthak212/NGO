@@ -614,16 +614,14 @@ router.post('/admin/customer/update', restrict, async (req, res) => {
     const db = req.app.db;
 
     const customerObj = {
-        company: req.body.company,
-        email: req.body.email,
         firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        address1: req.body.address1,
-        address2: req.body.address2,
-        country: req.body.country,
-        state: req.body.state,
-        postcode: req.body.postcode,
-        phone: req.body.phone
+        fatherName: req.body.fatherName,
+        motherName: req.body.motherName,
+        Addhar: req.body.addhar,
+        Address: req.body.address,
+        phone: req.body.phone,
+        dob: req.body.dob,
+        isSelected: common.convertBool(req.body.isSelected)
     };
 
     // Handle optional values
@@ -841,10 +839,44 @@ router.get('/customer/contact', async (req, res, next) => {
 });
 router.get('/customer/portfolio', async (req, res, next) => {
     const config = req.app.config;
-
+    const db = req.app.db;
+    var gallery = await db.gallerys.find({}).toArray();
     res.render(`${config.themeViews}portfolio`, {
         title: 'Contact',
         config: req.app.config,
+        session: req.session,
+        gallery: gallery,
+        message: clearSessionValue(req.session, 'message'),
+        messageType: clearSessionValue(req.session, 'messageType'),
+        helpers: req.handlebars.helpers,
+        showFooter: true
+    });
+});
+router.get('/customer/registered',async (req, res)=>{
+    const config = req.app.config;
+    const db = req.app.db;
+
+    var customer = await db.customers.find({}).toArray();
+    res.render(`${config.themeViews}registered`, {
+        title: 'Registered',
+        config: req.app.config,
+        customers: customer,
+        session: req.session,
+        message: clearSessionValue(req.session, 'message'),
+        messageType: clearSessionValue(req.session, 'messageType'),
+        helpers: req.handlebars.helpers,
+        showFooter: true
+    });
+});
+router.get('/customer/selectedregistered',async (req, res)=>{
+    const config = req.app.config;
+    const db = req.app.db;
+
+    var customer = await db.customers.find({isSelected: true}).toArray();
+    res.render(`${config.themeViews}selectedstudent`, {
+        title: 'Selected Student',
+        config: req.app.config,
+        customers: customer,
         session: req.session,
         message: clearSessionValue(req.session, 'message'),
         messageType: clearSessionValue(req.session, 'messageType'),

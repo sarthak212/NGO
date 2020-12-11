@@ -500,15 +500,14 @@ $(document).ready(function (){
                 url: '/admin/customer/update',
                 data: {
                     customerId: $('#customerId').val(),
-                    email: $('#email').val(),
                     firstName: $('#firstName').val(),
-                    lastName: $('#lastName').val(),
-                    address1: $('#address1').val(),
-                    address2: $('#address2').val(),
-                    country: $('#country').val(),
-                    state: $('#state').val(),
-                    postcode: $('#postcode').val(),
-                    phone: $('#phone').val()
+                    fatherName: $('#fatherName').val(),
+                    motherName: $('#motherName').val(),
+                    address: $('#address').val(),
+                    addhar: $('#Addhar').val(),
+                    dob: $('#dob').val(),
+                    phone: $('#phone').val(),
+                    isSelected: $('#isselected').val(),
                 }
             })
             .done(function(msg){
