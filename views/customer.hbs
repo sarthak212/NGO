@@ -43,19 +43,7 @@
         <div class="col-sm-12">
             <div class="form-group">
             <label class="control-label">DOB</label>
-                <input type="date" class="form-control" name="dob" id="dob" value={{result.dob}}>
-            </div>
-        </div>
-        <div class="col-sm-5">
-                <div class="form-group">
-                <label class="control-label">City *</label>
-                    <input type="text" class="form-control" name="city" id="city" value={{result.city}} required>
-                </div>
-            </div>
-        <div class="col-sm-5">
-            <div class="form-group">
-            <label class="control-label">{{ @root.__ "Postcode" }} *</label>
-                <input type="text" class="form-control" name="postcode" id="postcode" value={{result.pincode}} required>
+                <input type="text" class="form-control" name="dob" id="dob" value={{result.dob}}>
             </div>
         </div>
         <div class="col-sm-5">
@@ -64,7 +52,15 @@
                 <input type="text" class="form-control" name="phone" id="phone" value={{result.phone}} required>
             </div>
         </div>
-
+<div class="col-12">
+    <div class="form-group">
+        <label for="isselected" class="control-label">Selected</label>
+        <select name="isselected" id="isselected">
+            <option value="false" {{#unless result.isSelected}}selected{{/unless}} >Not Selected</option>
+            <option value="true" {{#if result.isSelected}}selected{{/if}}>Selected</option>
+        </select>
+    </div>
+</div>
         <div class="col-sm-12">
             <div class="form-group">
             <label class="control-label">{{ @root.__ "Creation date" }}</label>
