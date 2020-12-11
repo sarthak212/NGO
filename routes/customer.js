@@ -188,13 +188,15 @@ router.post('/customer/register',upload2.array('uploadFile'), async function(req
 });
 
 
-router.get('/admin/gallery',async (req,res)=>
+router.get('/admin/gallery', restrict,async (req,res)=>
 {
     const db = req.app.db;
+    var item = await db.gallerys.find({}).toArray();
     res.render('gallery', {
         title: 'Edit product',
         admin: true,
         session: req.session,
+        gallery: item,
         message: common.clearSessionValue(req.session, 'message'),
         messageType: common.clearSessionValue(req.session, 'messageType'),
         config: req.app.config,
@@ -202,7 +204,7 @@ router.get('/admin/gallery',async (req,res)=>
         helpers: req.handlebars.helpers
     });
 })
-router.post('/customer/gallery',upload2.array('uploadFile'),async (req,res)=>
+router.post('/customer/gallery', restrict,upload2.array('uploadFile'),async (req,res)=>
 {
     const config = req.app.config;
     const db = req.app.db;
@@ -236,16 +238,37 @@ router.post('/customer/gallery',upload2.array('uploadFile'),async (req,res)=>
                                 fs.unlinkSync(files[0].path);
                             }
                         });
-                    res.redirect('/');
+                    res.redirect('/admin/gallery');
             }catch(ex){
                 console.error(colors.red('Failed to insert customer: ', ex));
                 res.status(400).json({
                     message: 'Error uploading .'
                 });
             }
-})
-
-router.post("/customer/youtube",async function(req,res)
+});
+router.post('/customer/deletegallery', restrict,async function(req,res) {
+    const db = req.app.db;
+    if(!req.body.id) {
+        req.session.message = "Id not available";
+        req.session.messageType = 'danger';
+        res.redirect('/admin/gallery');
+        return;
+    }
+    try{
+        await db.gallerys.deleteOne({_id: getId(req.body.id)});
+        req.session.message = "Gallery Item successfully Deleted";
+        req.session.messageType = 'success';
+        res.redirect('/admin/gallery');
+        return;
+    }
+    catch(ex){
+        req.session.message = "Gallery Item deletion failed";
+        req.session.messageType = 'danger';
+        res.redirect('/admin/gallery');
+        return;
+    }
+});
+router.post("/customer/youtube", restrict,async function(req,res)
 {
     const config = req.app.config;
     const db = req.app.db;
@@ -261,7 +284,7 @@ router.post("/customer/youtube",async function(req,res)
         {
             console.log(ex);
         }
-res.redirect('/');
+res.redirect('/admin/gallery');
 })
 
 router.post('/customer/confirm', async (req, res)=> {

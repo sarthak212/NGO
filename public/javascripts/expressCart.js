@@ -38,6 +38,24 @@ $(document).ready(function () {
                 });
         }
     });
+    $('.deletegallery').on('click',function(e) {
+        if (!e.isDefaultPrevented()) {
+            e.preventDefault();
+            $.ajax({
+                    method: 'POST',
+                    url: '/customer/deletegallery',
+                    data: {
+                        id: $(this).attr('data-id')
+                    }
+                })
+                .done(function (msg) {
+                    showNotification(msg.message, 'success', false, '/');
+                })
+                .fail(function (msg) {
+                    showNotification(msg.responseJSON.message, 'danger');
+                });
+        }
+    });
 
     $(document).on('click', '.menu-btn', function (e) {
         e.preventDefault();
