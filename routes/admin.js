@@ -192,18 +192,7 @@ router.get('/admin/dashboard', csrfProtection, restrict, async (req, res) => {
         dashboardData.productsSold = 0;
     }
 
-    res.render('dashboard', {
-        title: 'Cart dashboard',
-        session: req.session,
-        admin: true,
-        dashboardData,
-        themes: common.getThemes(),
-        message: common.clearSessionValue(req.session, 'message'),
-        messageType: common.clearSessionValue(req.session, 'messageType'),
-        helpers: req.handlebars.helpers,
-        config: req.app.config,
-        csrfToken: req.csrfToken()
-    });
+    res.redirect('/admin/customers');
 });
 
 // settings
