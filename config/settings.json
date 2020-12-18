@@ -17,7 +17,7 @@
     "customCss": "",
     "currencySymbol": "₹",
     "paymentGateway": "stripe",
-    "databaseConnectionString": "mongodb://localhost:27017/ngo",
+    "databaseConnectionString": "mongodb+srv://ngo:deepak2020@cluster0.dypxj.mongodb.net/ngo?retryWrites=true&w=majority",
     "theme": "Cloth",
     "trackStock": false,
     "orderHook": "",
