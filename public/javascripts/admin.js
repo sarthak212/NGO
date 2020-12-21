@@ -239,9 +239,6 @@ $(document).ready(function (){
     $('#productNewForm').on('submit', function(e){
         if(!e.isDefaultPrevented()){
             e.preventDefault();
-            if($('#productPermalink').val() === '' && $('#productTitle').val() !== ''){
-                $('#productPermalink').val(slugify($('#productTitle').val()));
-            }
             $.ajax({
                 method: 'POST',
                 url: '/admin/product/insert',
@@ -249,12 +246,7 @@ $(document).ready(function (){
                     productTitle: $('#productTitle').val(),
                     productPrice: $('#productPrice').val(),
                     productPublished: $('#productPublished').val(),
-                    productStock: $('#productStock').val(),
-                    productDescription: $('#productDescription').val(),
-                    productPermalink: $('#productPermalink').val(),
-                    productSubscription: $('#productSubscription').val(),
-                    productComment: $('#productComment').is(':checked'),
-                    productTags: $('#productTags').val()
+                    productTiming: $('#productTiming').val()
                 }
             })
             .done(function(msg){
@@ -275,9 +267,6 @@ $(document).ready(function (){
     $('#productEditForm').on('submit', function(e){
         if(!e.isDefaultPrevented()){
             e.preventDefault();
-            if($('#productPermalink').val() === '' && $('#productTitle').val() !== ''){
-                $('#productPermalink').val(slugify($('#productTitle').val()));
-            }
             $.ajax({
                 method: 'POST',
                 url: '/admin/product/update',
@@ -286,13 +275,7 @@ $(document).ready(function (){
                     productTitle: $('#productTitle').val(),
                     productPrice: $('#productPrice').val(),
                     productPublished: $('#productPublished').val(),
-                    productStock: $('#productStock').val(),
-                    productStockDisable: $('#productStockDisable').is(':checked'),
-                    productDescription: $('#productDescription').val(),
-                    productPermalink: $('#productPermalink').val(),
-                    productSubscription: $('#productSubscription').val(),
-                    productComment: $('#productComment').is(':checked'),
-                    productTags: $('#productTags').val()
+                    productTiming: $('#productTiming').val()
                 }
             })
             .done(function(msg){

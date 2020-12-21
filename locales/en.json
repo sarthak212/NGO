@@ -222,5 +222,12 @@
 	"Address": "Address",
 	"Image": "Image",
 	"Video": "Video",
-	"Submit": "Submit"
+	"Submit": "Submit",
+	"New Course": "New Course",
+	"Course title": "Course title",
+	"Course price": "Course price",
+	"Unpaid": "Unpaid",
+	"Timing": "Timing",
+	"Morning": "Morning",
+	"Evening": "Evening"
 }

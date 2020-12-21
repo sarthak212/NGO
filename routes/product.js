@@ -95,32 +95,12 @@ router.post('/admin/product/insert', restrict, checkAccess, async (req, res) => 
     const db = req.app.db;
 
     const doc = {
-        productPermalink: req.body.productPermalink,
         productTitle: common.cleanHtml(req.body.productTitle),
         productPrice: req.body.productPrice,
-        productDescription: common.cleanHtml(req.body.productDescription),
         productPublished: common.convertBool(req.body.productPublished),
-        productTags: req.body.productTags,
-        productComment: common.checkboxBool(req.body.productComment),
-        productAddedDate: new Date(),
-        productStock: common.safeParseInt(req.body.productStock) || null,
-        productStockDisable: common.convertBool(req.body.productStockDisable)
+        productTiming: common.convertBool(req.body.productTiming)
     };
 
-    // Validate the body again schema
-    const schemaValidate = validateJson('newProduct', doc);
-    if(!schemaValidate.result){
-        console.log('schemaValidate errors', schemaValidate.errors);
-        res.status(400).json(schemaValidate.errors);
-        return;
-    }
-
-    // Check permalink doesn't already exist
-    const product = await db.products.countDocuments({ productPermalink: req.body.productPermalink });
-    if(product > 0 && req.body.productPermalink !== ''){
-        res.status(400).json({ message: 'Permalink already exists. Pick a new one.' });
-        return;
-    }
 
     try{
         const newDoc = await db.products.insertOne(doc);
@@ -316,33 +296,17 @@ router.post('/admin/product/update', restrict, checkAccess, async (req, res) => 
 
     const productDoc = {
         productId: req.body.productId,
-        productPermalink: req.body.productPermalink,
         productTitle: common.cleanHtml(req.body.productTitle),
         productPrice: req.body.productPrice,
-        productDescription: common.cleanHtml(req.body.productDescription),
         productPublished: common.convertBool(req.body.productPublished),
-        productTags: req.body.productTags,
-        productComment: common.checkboxBool(req.body.productComment),
-        productStock: common.safeParseInt(req.body.productStock) || null,
-        productStockDisable: common.convertBool(req.body.productStockDisable)
+        productTiming: common.convertBool(req.body.productTiming)
     };
 
-    // Validate the body again schema
-    const schemaValidate = validateJson('editProduct', productDoc);
-    if(!schemaValidate.result){
-        res.status(400).json(schemaValidate.errors);
-        return;
-    }
 
     // Remove productId from doc
     delete productDoc.productId;
 
-    // if no featured image
-    if(!product.productImage){
-        productDoc.productImage = '/uploads/placeholder.png';
-    }else{
-        productDoc.productImage = product.productImage;
-    }
+
 
     try{
         await db.products.updateOne({ _id: common.getId(req.body.productId) }, { $set: productDoc }, {});

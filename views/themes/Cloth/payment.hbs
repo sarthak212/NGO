@@ -1,0 +1,36 @@
+<button id="rzp-button1">Pay and Place Order</button>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {    "key": "{{@root.keyId}}", // Enter the Key ID generated from the Dashboard
+        "amount": "{{@root.razoramount}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise    
+        "currency": "INR",
+        "name": "DWDS",
+        "description": "Payment Gateway",
+        "image": "https://res.cloudinary.com/plant4u/image/upload/v1597585136/4_zwivhs.png",
+        "order_id": "{{@root.razorpayid}}", //Pass the `id` obtained in the previous step       
+        "handler": function (response){ 
+                    console.log(response);       
+                    $.ajax({
+                        method: 'POST',
+                        url: '/checkout/confirm/razorpay',
+                        data: {
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_signature: response.razorpay_signature
+                        }
+                    })
+                    .done(function (msg) {
+                        console.log(msg);
+                        window.location = "/payment/"+msg.id;
+                    })
+                    .fail(function (msg){
+                        console.log(msg);
+                        showNotification(msg.responseJSON.message, 'danger');
+                    });   
+                    }};
+        var rzp1 = new Razorpay(options);
+        document.getElementById('rzp-button1').onclick = function(e){
+                rzp1.open();
+                e.preventDefault();
+                }
+        </script>
