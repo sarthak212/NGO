@@ -13,6 +13,7 @@ const {
     sendEmail,
     clearCustomer
 } = require('../lib/common');
+const Razorpay = require('razorpay');
 const multer = require('multer');
 const fs = require('fs');
 const rateLimit = require('express-rate-limit');
@@ -28,6 +29,12 @@ cloudinary.config({
   });
 
 //*********************************//
+var keyid = "rzp_live_vNnLLh06qS00Rf";
+var keysecret = "k5BjcXG2c0mLEUpoKKoAUy2Z";
+var instance = new Razorpay({
+    key_id: keyid,
+    key_secret: keysecret
+  })
 
 const authy = require('authy')(process.env.Authy_Key);
 
@@ -36,15 +43,18 @@ const apiLimiter = rateLimit({
     max: 5
 });
 
-router.get('/customer/register', function(req, res) {
+router.get('/customer/register',async function(req, res) {
     const config = req.app.config;
+    const db = req.app.db;
 	console.log('New register request...');
-
-	
+    var paidcourse = await db.products.find({productPublished: common.convertBool(true)}).toArray();
+    var unpaidcourse = await db.products.find({productPublished: common.convertBool(false)}).toArray();
     res.render(`${config.themeViews}register`, {
         title: 'User Registration',
         config: req.app.config,
         session: req.session,
+        paidcourse: paidcourse,
+        unpaidcourse: unpaidcourse,
         message: clearSessionValue(req.session, 'message'),
         messageType: clearSessionValue(req.session, 'messageType'),
         helpers: req.handlebars.helpers,
@@ -58,25 +68,13 @@ router.post('/customer/register',upload2.array('uploadFile'), async function(req
     const db = req.app.db;
     
     var files = req.files;
-    if(files.length < 4) {
+    if(files.length < 1) {
         req.session.message = "All Files Required";
         req.session.messageType = 'danger';
         res.redirect('/customer/register');
         return;
     }
-    var customerObj = {
-        firstName: req.body.Name,
-        fatherName: req.body.Father,
-        motherName: req.body.Mother,
-        Addhar: req.body.Addhar,
-        Address: req.body.Address,
-        phone: req.body.Mobile,
-        dob: req.body.Date,
-        gender: req.body.Gender,
-        courser: req.body.Course,
-        created: new Date()
-    };
-    
+    var customerObj = Object(req.body);
     
       
             try{
@@ -89,11 +87,10 @@ router.post('/customer/register',upload2.array('uploadFile'), async function(req
                     // Set the customer into the session
                     req.session.customerPresent = true;
                     req.session.customerId = customerReturn._id;
-                    req.session.customerFirstname = customerReturn.firstName;
-                    req.session.customerFathername = customerReturn.fatherName;
-                    req.session.customerMothername = customerReturn.motherName;
+                    req.session.customerFirstname = customerReturn.Name;
+                    req.session.customerFathername = customerReturn.Father;
+                    req.session.customerMothername = customerReturn.Mother;
                     req.session.customerAddhar = customerReturn.Addhar;
-                    req.session.customerPhone = customerReturn.phone;
                     var customerId = req.session.customerId;
                     cloudinary.uploader.upload(files[0].path,
                         async function(error, result) {
@@ -115,6 +112,7 @@ router.post('/customer/register',upload2.array('uploadFile'), async function(req
                                 fs.unlinkSync(files[0].path);
                             }
                         });
+                        if(files[1]) {
                     cloudinary.uploader.upload(files[1].path,
                         async function(error, result) {
                             if(result){
@@ -135,6 +133,8 @@ router.post('/customer/register',upload2.array('uploadFile'), async function(req
                                 fs.unlinkSync(files[1].path);
                             }
                         });
+                    }
+                    if(files[2]){
                     cloudinary.uploader.upload(files[2].path,
                         async function(error, result) {
                             if(result){
@@ -155,6 +155,8 @@ router.post('/customer/register',upload2.array('uploadFile'), async function(req
                                 fs.unlinkSync(files[2].path);
                             }
                         });
+                    }
+                    if(files[3]){
                     cloudinary.uploader.upload(files[3].path,
                         async function(error, result) {
                             if(result){
@@ -175,9 +177,15 @@ router.post('/customer/register',upload2.array('uploadFile'), async function(req
                                 fs.unlinkSync(files[3].path);
                             }
                         });
-                    
-                    res.redirect('/');
+                    }
+                    if(customerObj.skills) {
+                        await db.customers.findOneAndUpdate({_id: getId(customerId)},{$set: {Paid: "Unpaid"}});
+                        res.redirect(`/customer/payment/`+req.session.customerId);
+                    }
+                    await db.customers.findOneAndUpdate({_id: getId(customerId)},{$set: {Paid: "Paid"}});
+                    res.redirect('/customer/registered');
                 });
+                
             }catch(ex){
                 console.error(colors.red('Failed to insert customer: ', ex));
                 res.status(400).json({
@@ -187,7 +195,85 @@ router.post('/customer/register',upload2.array('uploadFile'), async function(req
 
 });
 
+router.get('/customer/payment/:orderId',async (req,res)=>{
+    const config = req.app.config;
+    const db = req.app.db;
 
+    const order = await db.customers.findOne({_id: getId(req.params.orderId)});
+    if(!order){
+        req.session.message = "Customer not found";
+        req.session.messageType = "danger";
+        res.redirect('/customer/register');
+        return;
+    }
+    if(order.Paid == "Paid"){
+        
+            req.session.message = "Already Paid";
+            req.session.messageType = "danger";
+            res.redirect('/customer/registered');
+            return;
+        
+    }
+    var totalAmount = 0;
+    if(order.skills instanceof Array){
+        for(var i = 0;i<order.skills.length;i++) {
+            var course = await db.products.findOne({_id: getId(order.skills[i])});
+            totalAmount += parseInt(course.price);
+        }
+    }
+    else {
+        var course = await db.products.findOne({_id: getId(order.skills)});
+        totalAmount = parseInt(course.price);
+    }
+    var amount = parseInt(Number(totalAmount) * 100);
+    var options = {
+        amount: amount,  // amount in the smallest currency unit
+        currency: "INR",
+        receipt: "rcptid_11"
+      };
+      req.session.razorpayamount = amount;
+      instance.orders.create(options, function(err, order1) {
+          if(err){
+              console.log(err);
+          }
+        req.session.orderidgenerated = true;
+        req.session.razorOrderId = order1.id;
+        res.render(`${config.themeViews}payment`,{
+            title: "Payments",
+            session: req.session,
+            order: order,
+            keyId: 78,
+            razoramount: amount,
+            razorpayid: order1.id,
+            config: req.app.config,
+            message: common.clearSessionValue(req.session,'message'),
+            messageType: common.clearSessionValue(req.session,'messagType'),
+            helpers: req.handlebars.helpers
+        });res.status(200).send({message: order.id});
+        return;
+      });
+});
+router.post('/checkout/confirm/razorpay',async (req,res)=>{
+    const config = req.app.config;
+    const db = req.app.db;
+    var bodymessage = req.body.razorpay_order_id + `|` + req.body.razorpay_payment_id;
+    console.log(req.body);
+    var secret = "k5BjcXG2c0mLEUpoKKoAUy2Z"; // from the dashboard
+    var generated_signature = crypto.createHmac("sha256",secret).update(bodymessage.toString()).digest('hex');
+    console.log(generated_signature);
+    console.log(req.body.razorpay_signature);
+  if (req.body.razorpay_signature && generated_signature == req.body.razorpay_signature) {
+      await db.customers.findOneAndUpdate({_id: getId(customerId)},{$set: {Paid: "Paid",razorpay_payment_id:razorpay_payment_id,razorpay_order_id:razorpay_order_id,razorpay_signature:razorpay_signature}});
+        res.redirect('/customer/registered');
+        return;
+    }
+    else {
+        req.session.message = "Signature Matching Failed";
+        req.session.messageType = "danger";
+        res.redirect('/customer/registered');
+        return;
+    }
+});
 router.get('/admin/gallery', restrict,async (req,res)=>
 {
     const db = req.app.db;

@@ -118,36 +118,30 @@
             <div class="form-group">
               <label for="Course">Choose a Unpaid Course: (Not mandatory)</label>
                  <select name="Course" id="Course">
-                   <option value="">Select </option>
-                    <option value="Computer">Computer courses</option>
-                    <option value="Account">Account course</option>
-                    <option value="Medical">Medical laboratory technician</option>
-                    <option value="Retail">Retail sale</option>
+                   {{#each unpaidcourse}}
+                   <option value="{{this._id}}">{{this.productTitle}}</option>
+                    {{/each}}
                   </select>
             </div>
             <div class="form-group">
               <label for="paidCourse">Choose Paid Course: (Not mandatory and Can Choose Multiple)</label>
               <select name="skills" id="paidCourse" multiple="" class="ui fluid dropdown">
-              <option value="">Skills</option>
-            <option value="angular">Angular</option>
-            <option value="css">CSS</option>
-            <option value="design">Graphic Design</option>
-            <option value="ember">Ember</option>
-            <option value="html">HTML</option>
-            <option value="ia">Information Architecture</option>
-            <option value="javascript">Javascript</option>
-            <option value="mech">Mechanical Engineering</option>
-            <option value="meteor">Meteor</option>
-            <option value="node">NodeJS</option>
-            <option value="plumbing">Plumbing</option>
-            <option value="python">Python</option>
-            <option value="rails">Rails</option>
-            <option value="react">React</option>
-            <option value="repair">Kitchen Repair</option>
-            <option value="ruby">Ruby</option>
-            <option value="ui">UI Design</option>
-            <option value="ux">User Experience</option>
+                {{#each paidcourse}}
+              <option value="{{this._id}}">{{this.productTitle}}</option>
+              {{/each}}
             </select>
+            </div>
+            <div class="form-group">
+              <label for="Religion">Religion</label> <br>
+               <select name="Religion" id="Religion">
+                   <option value="">Select </option>
+                    <option value="Hindu">Hindu</option>
+                    <option value="Muslim">Muslim</option>
+                    <option value="Christians">Christians</option>
+                    <option value="Sikhs">Sikhs</option>
+                    <option value="Jains">Jains</option>
+                    <option value="Buddhists">Buddhists</option>
+                  </select>
             </div>
             <div class="form-group">
               <label for="">Want Placement Option</label> <br>
@@ -157,10 +151,10 @@
   <label for="placeno">No</label><br>
             </div>
             <div class="form-group">
-              <label for="">Placement Type</label>
-              <select name="" id="">
-                <option value="">Self Employed</option>
-                <option value="">Wager</option>
+              <label for="placetype">Placement Type</label>
+              <select name="placetype" id="placetype">
+                <option value="self">Self Employed</option>
+                <option value="wager">Wager</option>
               </select>
               
             </div>
@@ -171,13 +165,14 @@
               <input type="radio" id="loanno" name="loan" value="no">
               <label for="loanno">No</label><br>
             </div>
+            
             <div class="form-group">
-              <label for="">Loan Type</label>
-              <select name="" id="">
-                <option value="">PMEGP</option>
-                <option value="">Kvic</option>
-                <option value="">Mudra Load</option>
-                <option value="">Jkedi</option>
+              <label for="loadtype">Loan Type</label>
+              <select name="loantype" id="loantype">
+                <option value="pmegp">PMEGP</option>
+                <option value="kvic">Kvic</option>
+                <option value="mudra">Mudra Load</option>
+                <option value="jkedi">Jkedi</option>
               </select>
               
             </div>
