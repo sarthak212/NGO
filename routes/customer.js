@@ -29,8 +29,8 @@ cloudinary.config({
   });
 
 //*********************************//
-var keyid = "rzp_live_vNnLLh06qS00Rf";
-var keysecret = "k5BjcXG2c0mLEUpoKKoAUy2Z";
+var keyid = "";
+var keysecret = "";
 var instance = new Razorpay({
     key_id: keyid,
     key_secret: keysecret
@@ -258,7 +258,7 @@ router.post('/checkout/confirm/razorpay',async (req,res)=>{
     const db = req.app.db;
     var bodymessage = req.body.razorpay_order_id + `|` + req.body.razorpay_payment_id;
     console.log(req.body);
-    var secret = "k5BjcXG2c0mLEUpoKKoAUy2Z"; // from the dashboard
+    var secret = ""; // from the dashboard
     var generated_signature = crypto.createHmac("sha256",secret).update(bodymessage.toString()).digest('hex');
     console.log(generated_signature);
     console.log(req.body.razorpay_signature);
