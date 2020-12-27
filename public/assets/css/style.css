@@ -2133,5 +2133,14 @@ section {
   color: #fff;
   text-decoration: none;
 }
-
-
+.whatsappicon {
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
+  z-index: 20;
+}
+.whatsappicon img {
+  font-size: 50px;
+  width: 60px;
+  height: 60px;
+}
