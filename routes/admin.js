@@ -126,7 +126,7 @@ router.get('/admin/setup', async (req, res) => {
 // insert a user
 router.post('/admin/setup_action', async (req, res) => {
     const db = req.app.db;
-
+console.log(req.body);
     const doc = {
         usersName: req.body.usersName,
         userEmail: req.body.userEmail,

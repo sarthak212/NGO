@@ -18,20 +18,20 @@ $(document).ready(function () {
 
         $('#offcanvasClose').hide();
     }
-
     $('#userSetupForm').on('submit', function (e) {
-        console.log("clicked");
         if (!e.isDefaultPrevented()) {
             e.preventDefault();
             $.ajax({
                     method: 'POST',
                     url: '/admin/setup_action',
                     data: {
-                        uploadFile: $('#uploadpdffile').val()
+                        usersName: $('#usersName').val(),
+                        userEmail: $('#userEmail1').val(),
+                        userPassword: $('#userPassword').val()
                     }
                 })
                 .done(function (msg) {
-                    showNotification(msg.message, 'success', false, '/');
+                    showNotification(msg.message, 'success', false, '/admin/login');
                 })
                 .fail(function (msg) {
                     showNotification(msg.responseJSON.message, 'danger');

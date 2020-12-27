@@ -44,6 +44,24 @@ const apiLimiter = rateLimit({
     max: 5
 });
 
+
+//Add download button option in node js
+router.get('/MOA/download',async (req,res)=>{
+    const config = req.app.config;
+    const db = req.app.db;
+    res.download('public/images/M.O.A.docx','MOA');
+    
+});
+
+router.get('/GST/download',async (req,res)=>{
+    const config = req.app.config;
+    const db = req.app.db;
+    res.download('public/images/DECLEAR FOR GST.pdf','Declare of GST');
+    
+});
+
+////
+
 router.get('/customer/register',async function(req, res) {
     const config = req.app.config;
     const db = req.app.db;
