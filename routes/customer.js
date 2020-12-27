@@ -63,14 +63,16 @@ router.get('/customer/register',async function(req, res) {
     });
 });
 const upload2 = multer({ dest: 'public/uploads/' });
-router.post('/customer/register',upload2.array('uploadFile'), async function(req,res)
+router.post('/customer/register',upload2.fields([{ name: 'uploadFile10', maxCount: 1 },{ name: 'uploadFile12', maxCount: 1 },{ name: 'uploadFilephoto', maxCount: 1 },{ name: 'uploadFilesign', maxCount: 1 }]), async function(req,res)
 {
     const config = req.app.config;
     const db = req.app.db;
     
     var files = req.files;
-    if(files.length < 1) {
-        req.session.message = "All Files Required";
+    console.log(files);
+    
+    if(files.uploadFile10.length != 1 || files.uploadFilephoto.length != 1 || files.uploadFilesign.length != 1) {
+        req.session.message = "First Marksheet, Photo and Sign Files Required";
         req.session.messageType = 'danger';
         res.redirect('/customer/register');
         return;
@@ -93,89 +95,89 @@ router.post('/customer/register',upload2.array('uploadFile'), async function(req
                     req.session.customerMothername = customerReturn.Mother;
                     req.session.customerAddhar = customerReturn.Addhar;
                     var customerId = req.session.customerId;
-                    cloudinary.uploader.upload(files[0].path,
+                    cloudinary.uploader.upload(files.uploadFile10[0].path,
                         async function(error, result) {
                             if(result){
                                 console.log(result);
                                 var json_String = JSON.stringify(result);
                                 var obj = JSON.parse(json_String);
                                
-                                console.log(files[0])
+                               
                                 var uploadobj = {
                                     id: obj.public_id,
                                     path : obj.secure_url,
                                     type: obj.format
                                 };
                                 await db.customers.findOneAndUpdate({_id: getId(customerId)},{$set: {marksheet10: uploadobj}});
-                                fs.unlinkSync(files[0].path);
+                                fs.unlinkSync(files.uploadFile10[0].path);
                             }
                             else {
-                                fs.unlinkSync(files[0].path);
+                                fs.unlinkSync(files.uploadFile10[0].path);
                             }
                         });
-                        if(files[1]) {
-                    cloudinary.uploader.upload(files[1].path,
+                        if(files.uploadFile12) {
+                    cloudinary.uploader.upload(files.uploadFile12[0].path,
                         async function(error, result) {
                             if(result){
                                 console.log(result);
                                 var json_String = JSON.stringify(result);
                                 var obj = JSON.parse(json_String);
                                 
-                                console.log(files[1])
+                                
                                 var uploadobj = {
                                     id: obj.public_id,
                                     path : obj.secure_url,
                                     type: obj.format
                                 };
                                 await db.customers.findOneAndUpdate({_id: getId(customerId)},{$set: {marksheet12: uploadobj}});
-                                fs.unlinkSync(files[1].path);
+                                fs.unlinkSync(files.uploadFile12[0].path);
                             }
                             else {
-                                fs.unlinkSync(files[1].path);
+                                fs.unlinkSync(files.uploadFile12[0].path);
                             }
                         });
                     }
-                    if(files[2]){
-                    cloudinary.uploader.upload(files[2].path,
+                    if(files.uploadFilephoto){
+                    cloudinary.uploader.upload(files.uploadFilephoto[0].path,
                         async function(error, result) {
                             if(result){
                                 console.log(result);
                                 var json_String = JSON.stringify(result);
                                 var obj = JSON.parse(json_String);
                                 
-                                console.log(files[2])
+                               
                                 var uploadobj = {
                                     id: obj.public_id,
                                     path : obj.secure_url,
                                     type: obj.format
                                 };
                                 await db.customers.findOneAndUpdate({_id: getId(customerId)},{$set: {photo: uploadobj}});
-                                fs.unlinkSync(files[2].path);
+                                fs.unlinkSync(files.uploadFilephoto[0].path);
                             }
                             else {
-                                fs.unlinkSync(files[2].path);
+                                fs.unlinkSync(files.uploadFilephoto[0].path);
                             }
                         });
                     }
-                    if(files[3]){
-                    cloudinary.uploader.upload(files[3].path,
+                    if(files.uploadFilesign){
+                    cloudinary.uploader.upload(files.uploadFilesign[0].path,
                         async function(error, result) {
                             if(result){
                                 console.log(result);
                                 var json_String = JSON.stringify(result);
                                 var obj = JSON.parse(json_String);
                                 
-                                console.log(files[3])
+                               
                                 var uploadobj = {
                                     id: obj.public_id,
                                     path : obj.secure_url,
                                     type: obj.format
                                 };
                                 await db.customers.findOneAndUpdate({_id: getId(customerId)},{$set: {sign: uploadobj}});
-                                fs.unlinkSync(files[3].path);
+                                fs.unlinkSync(files.uploadFilesign[0].path);
                             }
                             else {
-                                fs.unlinkSync(files[3].path);
+                                fs.unlinkSync(files.uploadFilesign[0].path);
                             }
                         });
                     }
