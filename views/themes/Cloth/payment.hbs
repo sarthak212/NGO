@@ -1,4 +1,35 @@
-<button id="rzp-button1">Pay and Place Order</button>
+ <main id="main">
+
+    <!-- ======= About Us Section ======= -->
+    <section id="about-us" class="about-us">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>Payment of Paid Course</strong></h2>
+        </div>
+
+        <div class="row content">
+            <table>
+                <tr>
+                    <th>Course Name</td>
+                    <th>Course Timing</th>
+                    <th>Course Price</th>
+                </tr>
+                {{#each course}}
+                <tr>
+                    <td>{{this.productTitle}}</td>
+                    <td>{{#if this.productTiming}}Morning{{else}}Evening{{/if}}</td>
+                    <td>{{this.productPrice}}</td>
+                </tr>
+                {{/each}}
+            </table>
+            <button class="btn btn-warning" style="margin: 10px auto;" id="rzp-button1">Pay and Place Order</button>
+            </div>
+            </div>
+            </section>
+            </main>
+
+
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
     var options = {    "key": "{{@root.keyId}}", // Enter the Key ID generated from the Dashboard
@@ -21,7 +52,7 @@
                     })
                     .done(function (msg) {
                         console.log(msg);
-                        window.location = "/payment/"+msg.id;
+                        window.location = "/customer/registered";
                     })
                     .fail(function (msg){
                         console.log(msg);

@@ -16,6 +16,7 @@ const {
 const Razorpay = require('razorpay');
 const multer = require('multer');
 const fs = require('fs');
+var crypto = require('crypto');
 const rateLimit = require('express-rate-limit');
 const { indexCustomers } = require('../lib/indexing');
 const { validateJson } = require('../lib/schema');
@@ -29,8 +30,8 @@ cloudinary.config({
   });
 
 //*********************************//
-var keyid = "";
-var keysecret = "";
+var keyid = "rzp_test_53E7dptbzQXAlj";
+var keysecret = "gBk4CcD6kDZnoyZ9GssbCRec";
 var instance = new Razorpay({
     key_id: keyid,
     key_secret: keysecret
@@ -178,12 +179,16 @@ router.post('/customer/register',upload2.array('uploadFile'), async function(req
                             }
                         });
                     }
+                    console.log(customerObj.skills);
                     if(customerObj.skills) {
                         await db.customers.findOneAndUpdate({_id: getId(customerId)},{$set: {Paid: "Unpaid"}});
                         res.redirect(`/customer/payment/`+req.session.customerId);
                     }
-                    await db.customers.findOneAndUpdate({_id: getId(customerId)},{$set: {Paid: "Paid"}});
-                    res.redirect('/customer/registered');
+                    else {
+                        await db.customers.findOneAndUpdate({_id: getId(customerId)},{$set: {Paid: "Paid"}});
+                        res.redirect('/customer/registered');
+                    }
+                    
                 });
                 
             }catch(ex){
@@ -215,15 +220,18 @@ router.get('/customer/payment/:orderId',async (req,res)=>{
         
     }
     var totalAmount = 0;
+    var courselist = [];
     if(order.skills instanceof Array){
         for(var i = 0;i<order.skills.length;i++) {
             var course = await db.products.findOne({_id: getId(order.skills[i])});
+            courselist.push(course);
             totalAmount += parseInt(course.price);
         }
     }
     else {
         var course = await db.products.findOne({_id: getId(order.skills)});
-        totalAmount = parseInt(course.price);
+        courselist.push(course);
+        totalAmount = parseInt(course.productPrice);
     }
     var amount = parseInt(Number(totalAmount) * 100);
     var options = {
@@ -238,19 +246,22 @@ router.get('/customer/payment/:orderId',async (req,res)=>{
           }
         req.session.orderidgenerated = true;
         req.session.razorOrderId = order1.id;
+        console.log(courselist);
+
         res.render(`${config.themeViews}payment`,{
             title: "Payments",
             session: req.session,
             order: order,
-            keyId: 78,
+            course: courselist,
+            keyId: "rzp_test_53E7dptbzQXAlj",
             razoramount: amount,
             razorpayid: order1.id,
             config: req.app.config,
             message: common.clearSessionValue(req.session,'message'),
             messageType: common.clearSessionValue(req.session,'messagType'),
             helpers: req.handlebars.helpers
-        });res.status(200).send({message: order.id});
-        return;
+        });
+  
       });
 });
 router.post('/checkout/confirm/razorpay',async (req,res)=>{
@@ -258,12 +269,12 @@ router.post('/checkout/confirm/razorpay',async (req,res)=>{
     const db = req.app.db;
     var bodymessage = req.body.razorpay_order_id + `|` + req.body.razorpay_payment_id;
     console.log(req.body);
-    var secret = ""; // from the dashboard
+    var secret = "gBk4CcD6kDZnoyZ9GssbCRec"; // from the dashboard
     var generated_signature = crypto.createHmac("sha256",secret).update(bodymessage.toString()).digest('hex');
     console.log(generated_signature);
     console.log(req.body.razorpay_signature);
   if (req.body.razorpay_signature && generated_signature == req.body.razorpay_signature) {
-      await db.customers.findOneAndUpdate({_id: getId(customerId)},{$set: {Paid: "Paid",razorpay_payment_id:razorpay_payment_id,razorpay_order_id:razorpay_order_id,razorpay_signature:razorpay_signature}});
+      await db.customers.findOneAndUpdate({_id: getId(req.session.customerId)},{$set: {Paid: "Paid",razorpay_payment_id:req.body.razorpay_payment_id,razorpay_order_id:req.body.razorpay_order_id,razorpay_signature:req.body.razorpay_signature}});
         res.redirect('/customer/registered');
         return;
     }
