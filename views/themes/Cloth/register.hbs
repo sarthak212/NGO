@@ -1,68 +1,20 @@
-  <main id="main" class="container">
-
-    <!-- ======= Breadcrumbs ======= -->
-    <!-- <section id="breadcrumbs" class="breadcrumbs">
-      <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center">
-          <h2>Contact</h2>
-          <ol>
-            <li><a href="index.html">Home</a></li>
-            <li>Contact</li>
-          </ol> 
-        </div>
-
-      </div>
-    </section> -->
-    <!-- End Breadcrumbs -->
-
-    <!-- ======= Contact Section ======= -->
-    <!-- <div class="map-section">
-      <iframe style="border:0; width: 90%; height: 500px; margin: 0 5% 0;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19733.224289683032!2d74.8230417284347!3d32.72333854562453!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391e84ff2378ed91%3A0x19bec1f7d5d92027!2sTalab%20Tillo%2C%20Jammu%20180002!5e0!3m2!1sen!2sin!4v1606337134572!5m2!1sen!2sin" frameborder="0" allowfullscreen></iframe>
-    </div>
-
-    <section id="contact" class="contact">
-      <div class="container">
-
-        <div class="row justify-content-center" data-aos="fade-up">
-
-          <div class="col-lg-10">
-
-            <div class="info-wrap">
-              <div class="row">
-                <div class="col-lg-4 info">
-                  <i class="icofont-google-map"></i>
-                  <h4>Location:</h4>
-                  <p>Huzari Bagah Road<br>SRL Lab Tallab Tillo<br>
-                    Jammu, India</p>
-                </div>
-
-                <div class="col-lg-4 info mt-4 mt-lg-0">
-                  <i class="icofont-envelope"></i>
-                  <h4>Email:</h4>
-                  <p>deepakwdsoicety@gmail.com</p>
-                </div>
-
-                <div class="col-lg-4 info mt-4 mt-lg-0">
-                  <i class="icofont-phone"></i>
-                  <h4>Call:</h4>
-                  <p> +91 9469543103<br> 0191 2554999</p>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-        </div> -->
-        <div class="section-title section-title2">
+  <div id="main" class="w-100">
+  
+      <div class="registermain" style="padding-top: 20px;display: flex;">
+        <div class="registercontainer">
+          <div class="sectionreg">
           <h2><strong>Registration Form</strong></h2>
         </div>
 
-        <div class="row mt-5 justify-content-center" data-aos="fade-up">
-          <div class="col-lg-10">
+      
+         
             <form action="/customer/register" method ="POST" enctype="multipart/form-data">
-              <div class="form-row">
-                <div class="col-md-6 form-group">
+            
+               <div class="sectionreg row">
+                <div class="col-12 mt-2 mb-4">
+                   <h3><strong>Personal Information</strong></h3>
+                </div>
+                  <div class="col-md-6 form-group">
                   <input type="text" name="Name" class="form-control" id="Name" placeholder="Your Name" data-rule="minlen:4" value="" data-msg="Please enter at least 4 chars" required />
                   <div class="validate"></div>
                 </div>
@@ -70,70 +22,31 @@
                   <input type="text" class="form-control" name="Father" id="Father" placeholder="Father Name"  value="" data-msg="Please Enter Father Name"  required/>
                   <div class="validate"></div>
                 </div>
-              </div>
-              <div class="form-group">
+        
+              <div class="form-group col-md-6">
                 <input type="text" class="form-control" name="Mother" id="Mother" placeholder="Mother Name" data-rule="minlen:4" value="" data-msg="Please Enter Father's Name"required />
                 <div class="validate"></div>
               </div>
-
-              <div class="form-group">
-                <input type="number" class="form-control" name="Addhar" id="Addhar" placeholder="Addhar Number" data-rule="minlen:12" value="" data-msg="Please Enter Addhar Number"required />
-                <div class="validate"></div>
-              </div>
-
-              <div class="form-group">
+              <div class="form-group col-md-6">
                 <input type="date" class="form-control" name="Date" id="Date" placeholder="Date of birth" value="" data-msg="Please Enter Date of Birth" required />
                 <div class="validate"></div>
               </div>
-              
-              <div class="form-group">
-                <input type="text" class="form-control" name="Address" id="Address" placeholder="Enter Your Address" data-rule="minlen:4" value="" data-msg="Please Enter Your Address"required />
+              <div class="form-group col-md-12">
+                <input type="number" class="form-control" name="Addhar" id="Addhar" placeholder="Addhar Number" data-rule="minlen:12" value="" data-msg="Please Enter Addhar Number"required />
                 <div class="validate"></div>
               </div>
-
-              <div class="form-group">
-                <input type="text" class="form-control" name="State" id="State" placeholder="State" data-rule="minlen:4" value="" data-msg="Please Enter State."required />
-                <div class="validate"></div>
-              </div>
-              
-               <div class="form-group">
-                <input type="text" class="form-control" name="City" id="City" placeholder="Enter Your City" data-rule="minlen:4" value="" data-msg="Please Enter Your City"required />
-                <div class="validate"></div>
-              </div>
-
-               <div class="form-group">
-                <input type="number" class="form-control" name="Pincode" id="Pincode" placeholder="Enter Your Pincode" data-rule="minlen:4" value="" data-msg="Please Enter Your Pincode"required />
-                <div class="validate"></div>
-              </div>
-
-              <div class="form-group">
+            <div class="form-group col-sm-6">
                 <label for="Gender">Choose Gender:</label>
-                <select name="Gender" id="Gender">
+                <select name="Gender" class="ui selection dropdown" id="Gender">
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                   <option value="Other">Other</option>
                 </select>
               </div>
 
-            <div class="form-group">
-              <label for="Course">Choose a Unpaid Course: (Not mandatory)</label>
-                 <select name="Course" id="Course">
-                   {{#each unpaidcourse}}
-                   <option value="{{this._id}}">{{this.productTitle}}</option>
-                    {{/each}}
-                  </select>
-            </div>
-            <div class="form-group">
-              <label for="paidCourse">Choose Paid Course: (Not mandatory and Can Choose Multiple)</label>
-              <select name="skills" id="paidCourse" multiple="" class="ui fluid dropdown">
-                {{#each paidcourse}}
-              <option value="{{this._id}}">{{this.productTitle}}</option>
-              {{/each}}
-            </select>
-            </div>
-            <div class="form-group">
-              <label for="Religion">Religion</label> <br>
-               <select name="Religion" id="Religion">
+              <div class="form-group col-sm-6">
+              <label for="Religion">Religion: </label>
+               <select name="Religion" class="ui selection dropdown" id="Religion">
                    <option value="">Select </option>
                     <option value="Hindu">Hindu</option>
                     <option value="Muslim">Muslim</option>
@@ -143,22 +56,73 @@
                     <option value="Buddhists">Buddhists</option>
                   </select>
             </div>
-            <div class="form-group">
+              
+               </div>
+              
+              <div class="sectionreg row">
+                <div class="col-12 mt-2 mb-4">
+                   <h3><strong>Location Details</strong></h3>
+                </div>
+                <div class="form-group col-sm-6">
+                <input type="text" class="form-control" name="Address" id="Address" placeholder="Enter Your Address" data-rule="minlen:4" value="" data-msg="Please Enter Your Address"required />
+                <div class="validate"></div>
+              </div>
+
+              <div class="form-group col-sm-6">
+                <input type="text" class="form-control" name="State" id="State" placeholder="State" data-rule="minlen:4" value="" data-msg="Please Enter State."required />
+                <div class="validate"></div>
+              </div>
+              
+               <div class="form-group col-sm-6">
+                <input type="text" class="form-control" name="City" id="City" placeholder="Enter Your City" data-rule="minlen:4" value="" data-msg="Please Enter Your City"required />
+                <div class="validate"></div>
+              </div>
+
+               <div class="form-group col-sm-6">
+                <input type="number" class="form-control" name="Pincode" id="Pincode" placeholder="Enter Your Pincode" data-rule="minlen:4" value="" data-msg="Please Enter Your Pincode"required />
+                <div class="validate"></div>
+              </div>
+              </div>
+
+              
+
+            <div class="sectionreg row">
+              <div class="col-12 mt-2 mb-4">
+                   <h3><strong>Course Details</strong></h3>
+                </div>
+              <div class="form-group col-sm-12">
+              <label for="Course">Choose a Unpaid Course: (Not mandatory)</label>
+                 <select name="Course" class="ui selection dropdown" id="Course">
+                   {{#each unpaidcourse}}
+                   <option value="{{this._id}}">{{this.productTitle}}</option>
+                    {{/each}}
+                  </select>
+            </div>
+            <div class="form-group col-sm-12">
+              <label for="paidCourse">Choose Paid Course: (Not mandatory and Can Choose Multiple)</label>
+              <select name="skills" id="paidCourse" multiple="" class="ui fluid dropdown">
+                {{#each paidcourse}}
+              <option value="{{this._id}}">{{this.productTitle}}</option>
+              {{/each}}
+            </select>
+            </div>
+            
+            <div class="form-group col-sm-6">
               <label for="">Want Placement Option</label> <br>
               <input type="radio" id="placeyes" name="placement" value="yes">
-  <label for="placeyes">Yes</label><br>
-  <input type="radio" id="placeno" name="placement" value="no">
-  <label for="placeno">No</label><br>
+              <label for="placeyes">Yes</label><br>
+              <input type="radio" id="placeno" name="placement" value="no">
+              <label for="placeno">No</label><br>
             </div>
-            <div class="form-group">
+            <div class="form-group col-sm-6">
               <label for="placetype">Placement Type</label>
-              <select name="placetype" id="placetype">
+              <select name="placetype" class="ui selection dropdown" id="placetype">
                 <option value="self">Self Employed</option>
                 <option value="wager">Wager</option>
               </select>
               
             </div>
-            <div class="form-group">
+            <div class="form-group col-sm-6">
               <label for="">Loan Option</label> <br>
               <input type="radio" id="loanyes" name="loan" value="yes">
               <label for="loanyes">Yes</label><br>
@@ -166,9 +130,9 @@
               <label for="loanno">No</label><br>
             </div>
             
-            <div class="form-group">
+            <div class="form-group col-sm-6">
               <label for="loadtype">Loan Type</label>
-              <select name="loantype" id="loantype">
+              <select name="loantype" class="ui selection dropdown" id="loantype">
                 <option value="pmegp">PMEGP</option>
                 <option value="kvic">Kvic</option>
                 <option value="mudra">Mudra Load</option>
@@ -176,35 +140,45 @@
               </select>
               
             </div>
-            <div class="form-group">
+            </div>
+           <div class="sectionreg row">
+             <div class="col-12 mt-2 mb-4">
+                   <h3><strong>Course Details</strong></h3>
+                </div>
+              <div class="form-group col-sm-12">
               <label for="uploadpdffile">Upload 10th Marksheet or Any Higher education (Mandatory)</label>
               <input type="file" id="uploadpdffile" name="uploadFile10" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" />
             </div>
-            <div class="form-group">
+            <div class="form-group col-sm-12">
               <label for="uploadpdffile2">Upload 12th Marksheet or Any Other Marksheet (Not Mandatory)</label>
               <input type="file" id="uploadpdffile2" name="uploadFile12" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" />
             </div>
-            <div class="form-group">
+            <div class="form-group col-sm-12">
               <label for="uploadpdffile3">Upload Photo (Mandatory)</label>
               <input type="file" id="uploadpdffile3" name="uploadFilephoto" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" />
             </div>
-            <div class="form-group">
+            <div class="form-group col-sm-12">
               <label for="uploadpdffile4">Upload Sign (Mandatory)</label>
               <input type="file" id="uploadpdffile4" name="uploadFilesign" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" />
             </div>
+           </div>
               
-              <div class="text-center"><button class="btn btn-primary" type="submit">Submit</button></div>
+             <div class="sectionreg">
+                <div class=""><button class="btn btn-primary" style="font-size: 17px;" type="submit">Submit</button></div>
+             </div>
               
             </form>
     
-          </div>
+       
         
+       
         </div>
-
       </div>
-    </section><!-- End Contact Section -->
 
-  </main><!-- End #main -->
+   
+   <!-- End Contact Section -->
+
+  </div><!-- End #main -->
   
 <script>
   $('.ui.dropdown')
@@ -212,4 +186,5 @@
  
   })
 ;
+
 </script>
