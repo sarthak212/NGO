@@ -3,6 +3,8 @@
 body {
   font-family: "Open Sans", sans-serif;
   color: #4d4643;
+  font-size: 17px;
+  font-weight: 500;
 }
 
 a {
@@ -81,7 +83,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #header .logo {
-  font-size: 50px;
+  font-size: 30px;
   margin: 15px;
   padding: 0;
   line-height: 1;
@@ -1437,7 +1439,35 @@ section {
   margin: 20px;
   padding: 50px;
 }
-
+.registermain {
+  background: url('/assets/img/registerbg.jpg');
+}
+.registercontainer {
+  width: 60%;
+  background-color: white;
+  margin: 40px;
+  border-radius: 7px;
+}
+.registercontainer .sectionreg {
+  text-align: start;
+  padding: 20px;
+  border-bottom: 1px solid rgb(200,200,200);
+}
+.sectionreg .form-control {
+  font-size: 1.1rem;
+}
+.sectionreg .form-control {
+  font-weight: 600;
+}
+.sectionreg label {
+  font-size: 14px;
+}
+@media screen and (max-width: 720px){
+  .registercontainer {
+    width: 90%;
+    margin: auto;
+  }
+}
 /*--------------------------------------------------------------
 
 # Blog
