@@ -22,6 +22,7 @@ const { indexCustomers } = require('../lib/indexing');
 const { validateJson } = require('../lib/schema');
 const { restrict } = require('../lib/auth');
 var cloudinary = require('cloudinary').v2;
+const authy = require('authy')('zQmQJgif63mH1IpzroOgrhJpmZWUJ7qi');
 
 cloudinary.config({ 
     cloud_name: 'du7p7keyx', 
@@ -37,7 +38,7 @@ var instance = new Razorpay({
     key_secret: keysecret
   })
 
-const authy = require('authy')(process.env.Authy_Key);
+
 
 const apiLimiter = rateLimit({
     windowMs: 300000, // 5 minutes
@@ -62,10 +63,81 @@ router.get('/GST/download',async (req,res)=>{
 
 ////
 
+router.post('/customer/sendotp',async function(req,res){
+    const config = req.app.config;
+    const db = req.app.db;
+
+    var phone = req.body.phoneverify;
+    var email = req.body.emailverify;
+    var countryCode = '+91';
+    console.log(phone,email);
+    authy.register_user(email, phone, countryCode, function (regErr, regRes) {
+    	console.log('In Registration...');
+    	if (regErr) {
+       		console.log(regErr);
+               res.redirect('/customer/register');
+               return;
+    	} else if (regRes) {
+			console.log(regRes);
+			console.log("Here we go for the practice part"+regRes.user.id);
+
+            // Set the customer into the sessions
+
+
+
+    		authy.request_sms(regRes.user.id, function (smsErr, smsRes) {
+				console.log('Requesting SMS...');
+    			if (smsErr) {
+    				console.log(smsErr);
+                    req.session.message = smsErr;
+                    req.session.messageType = 'danger';
+                    res.redirect('/customer/register');
+                    return;
+    			} else if (smsRes) {
+                    req.session.customerPhone = phone;
+                    req.session.customerEmail = email;
+                    req.session.requestId = regRes.user.id;
+                    res.redirect('/customer/register');
+    			}
+			});
+    	}
+   	});
+});
+
+router.post('/customer/otpverify', async (req, res)=> {
+	console.log('New verify request...');
+    const config = req.app.config;
+    const db = req.app.db;
+	const id = req.body.requestId;
+	const token = req.body.pin;
+
+	authy.verify(id, token, async (verifyErr, verifyRes)=> {
+		console.log('In Verification...');
+		if (verifyErr) {
+			console.log(verifyErr);
+            req.session.message = "Otp not verified";
+            req.session.messageType = "danger";
+            res.redirect('/customer/register');
+            return;
+		} else if (verifyRes) {
+            console.log("Is session working properly"+req.session.customerEmail);
+            req.session.customerVerified = true;
+            res.redirect('/customer/register');
+            } else {
+              res.redirect('/customer/register');
+              return;
+            }
+	});
+});
+
 router.get('/customer/register',async function(req, res) {
     const config = req.app.config;
     const db = req.app.db;
-	console.log('New register request...');
+    console.log('New register request...');
+    var customerverified = false;
+    if(req.session.customerVerified) {
+        customerverified = true;
+    }
     var paidcourse = await db.products.find({productPublished: common.convertBool(true)}).toArray();
     var unpaidcourse = await db.products.find({productPublished: common.convertBool(false)}).toArray();
     res.render(`${config.themeViews}register`, {
@@ -73,6 +145,7 @@ router.get('/customer/register',async function(req, res) {
         config: req.app.config,
         session: req.session,
         paidcourse: paidcourse,
+        customerVerified : customerverified,
         unpaidcourse: unpaidcourse,
         message: clearSessionValue(req.session, 'message'),
         messageType: clearSessionValue(req.session, 'messageType'),
@@ -81,7 +154,7 @@ router.get('/customer/register',async function(req, res) {
     });
 });
 const upload2 = multer({ dest: 'public/uploads/' });
-router.post('/customer/register',upload2.fields([{ name: 'uploadFile10', maxCount: 1 },{ name: 'uploadFile12', maxCount: 1 },{ name: 'uploadFilephoto', maxCount: 1 },{ name: 'uploadFilesign', maxCount: 1 }]), async function(req,res)
+router.post('/customer/register',upload2.fields([{ name: 'uploadFile10', maxCount: 1 },{ name: 'uploadFile12', maxCount: 1 },{ name: 'uploadFilephoto', maxCount: 1 },{ name: 'uploadFilesign', maxCount: 1 },{ name: 'uploadFileaadhar', maxCount: 1 }]), async function(req,res)
 {
     const config = req.app.config;
     const db = req.app.db;
@@ -89,13 +162,15 @@ router.post('/customer/register',upload2.fields([{ name: 'uploadFile10', maxCoun
     var files = req.files;
     console.log(files);
     
-    if(files.uploadFile10.length != 1 || files.uploadFilephoto.length != 1 || files.uploadFilesign.length != 1) {
-        req.session.message = "First Marksheet, Photo and Sign Files Required";
+    if(files.uploadFile10.length != 1 || files.uploadFilephoto.length != 1 || files.uploadFilesign.length != 1 || files.uploadFileaadhar.length != 1) {
+        req.session.message = "First Marksheet, Photo, Aadhar and Sign Files Required";
         req.session.messageType = 'danger';
         res.redirect('/customer/register');
         return;
     }
     var customerObj = Object(req.body);
+    customerObj["email"] = req.session.customerEmail;
+    customerObj["phone"] = req.session.customerPhone;
     
       
             try{
@@ -199,6 +274,28 @@ router.post('/customer/register',upload2.fields([{ name: 'uploadFile10', maxCoun
                             }
                         });
                     }
+                    if(files.uploadFileaadhar){
+                        cloudinary.uploader.upload(files.uploadFileaadhar[0].path,
+                            async function(error, result) {
+                                if(result){
+                                    console.log(result);
+                                    var json_String = JSON.stringify(result);
+                                    var obj = JSON.parse(json_String);
+                                    
+                                   
+                                    var uploadobj = {
+                                        id: obj.public_id,
+                                        path : obj.secure_url,
+                                        type: obj.format
+                                    };
+                                    await db.customers.findOneAndUpdate({_id: getId(customerId)},{$set: {aadhardoc: uploadobj}});
+                                    fs.unlinkSync(files.uploadFileaadhar[0].path);
+                                }
+                                else {
+                                    fs.unlinkSync(files.uploadFileaadhar[0].path);
+                                }
+                            });
+                        }
                     console.log(customerObj.skills);
                     if(customerObj.skills) {
                         await db.customers.findOneAndUpdate({_id: getId(customerId)},{$set: {Paid: "Unpaid"}});

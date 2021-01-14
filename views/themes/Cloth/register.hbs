@@ -1,4 +1,67 @@
   <div id="main" class="w-100">
+    {{#unless customerVerified}}
+    {{#if session.requestId }}
+<div class="modal" id="otpenter"  tabindex="-1" role="dialog" style="padding-right: 12px; display: block;background-color:rgb(0,0,0,0.5)">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <ul class="nav nav-tabs card-header-tabs w-100 justify-content-between" role="tablist">
+          <li class="nav-item"><a class="nav-link active" href="#otp-tab" data-toggle="tab" role="tab"
+              aria-selected="true"><i class="fas fa-user-check marg-right-7"></i>Verify Mobile Number</a>
+          </li>
+          <li class="nav-item">
+              <button class="btn btn-danger" id="changesessionId">Close</button>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-body tab-content py-4 checkout_details_area">
+        <form action="/customer/otpverify" method="post" class="needs-validation tab-pane fade show active" autocomplete="off" novalidate id="signin-tab">
+          <div class="form-group">
+            <input class="form-control bottom-marg-10" type="tel" name="pin" id="otp" placeholder="Enter the OTP send to register mobile number" required>
+            <input type="hidden" name="requestId" value="{{session.requestId}}" >
+            <div class="invalid-feedback">Please enter the OTP</div>
+          </div>
+          <button class="btn btn-primary btn-block btn-shadow"  type="submit">Verify</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{else}}
+
+     <div class="modal" id="otpenter"  tabindex="-1" role="dialog" style="padding-right: 12px; display: block;background-color:rgb(0,0,0,0.5)">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <ul class="nav nav-tabs card-header-tabs w-100 justify-content-between" role="tablist">
+          <li class="nav-item" style="font-size: 20px;"><a class="nav-link active" href="#otp-tab" data-toggle="tab" role="tab"
+              aria-selected="true"><h3><strong>Verify User</strong></h3></a>
+          </li>
+          {{!-- <li class="nav-item">
+              <button class="btn btn-danger" id="changesessionId">Close</button>
+          </li> --}}
+        </ul>
+      </div>
+      <div class="modal-body tab-content py-4 checkout_details_area">
+        <form action="/customer/sendotp" method="post" class="needs-validation tab-pane fade show active" autocomplete="off" novalidate id="signin-tab">
+          <div class="form-group">
+            <input class="form-control bottom-marg-10" type="tel" name="phoneverify" id="otp" placeholder="Enter the mobile number" required>
+
+            <div class="invalid-feedback">Please enter the OTP</div>
+          </div>
+          <div class="form-group">
+            <input type="email" class="form-control" name="emailverify" placeholder="Emter Email" required>
+          </div>
+          <button class="btn btn-primary btn-block btn-shadow"  type="submit">Send OTP</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{/if}}
+    {{/unless}}
+
+    
   
       <div class="registermain" style="padding-top: 20px;display: flex;">
         <div class="registercontainer">
@@ -8,7 +71,7 @@
 
       
          
-            <form action="/customer/register" method ="POST" enctype="multipart/form-data">
+            <form action="/customer/register" method ="POST" enctype="multipart/form-data" id="myForm">
             
                <div class="sectionreg row">
                 <div class="col-12 mt-2 mb-4">
@@ -147,7 +210,7 @@
             </select>
             </div>
             
-            <div class="form-group col-sm-6">
+            <div class="form-group col-sm-6" id="placementvalue">
               <label for="">Want Placement Option</label> <br>
               <input type="radio" id="placeyes" name="placement" value="yes">
               <label for="placeyes">Yes</label><br>
@@ -156,23 +219,23 @@
             </div>
             <div class="form-group col-sm-6">
               <label for="placetype">Placement Type</label>
-              <select name="placetype" class="ui selection dropdown" id="placetype">
+              <select name="placetype" class="ui selection dropdown placetype2" id="placetype" disabled>
                 <option value="self">Self Employed</option>
                 <option value="wager">Wager</option>
               </select>
               
             </div>
-            <div class="form-group col-sm-6">
+            <div class="form-group col-sm-6" id="loanvalue">
               <label for="">Loan Option</label> <br>
-              <input type="radio" id="loanyes" name="loan" value="yes">
+              <input type="radio" id="loanyes" name="loan" value="yes" disabled>
               <label for="loanyes">Yes</label><br>
-              <input type="radio" id="loanno" name="loan" value="no">
+              <input type="radio" id="loanno" name="loan" value="no" disabled>
               <label for="loanno">No</label><br>
             </div>
             
             <div class="form-group col-sm-6">
               <label for="loadtype">Loan Type</label>
-              <select name="loantype" class="ui selection dropdown" id="loantype">
+              <select name="loantype" class="ui selection dropdown loantype" id="loantype" disabled>
                 <option value="pmegp">PMEGP</option>
                 <option value="kvic">Kvic</option>
                 <option value="mudra">Mudra Load</option>
@@ -331,6 +394,10 @@
               <label for="uploadpdffile4">Upload Sign (Mandatory)</label>
               <input type="file" id="uploadpdffile4" name="uploadFilesign" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" />
             </div>
+            <div class="form-group col-sm-12">
+              <label for="uploadpdffile5">Aadhar Card (Mandatory)</label>
+              <input type="file" id="uploadpdffile5" name="uploadFileaadhar" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" />
+            </div>
            </div>
               
              <div class="sectionreg">
@@ -356,5 +423,24 @@
  
   })
 ;
-
+$('#placementvalue input').on('change', function() {
+   if($('input[name=placement]:checked', '#myForm').val() == 'yes') {
+     console.log("checked");
+     $('#placetype').prop('disabled',false);
+     $('.placetype2').removeClass('disabled');
+   } 
+});
+$('#placetype').on('change', function() {
+   if($('#placetype').val() == 'self') {
+     console.log("checked2");
+     $('input[name=loan]').prop('disabled',false);
+   } 
+});
+$('#loanvalue input').on('change', function() {
+   if($('input[name=loan]:checked', '#myForm').val() == 'yes') {
+     console.log("checked3");
+     $('#loantype').prop('disabled',false);
+     $('.loantype').removeClass('disabled');
+   } 
+});
 </script>
