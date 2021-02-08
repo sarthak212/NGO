@@ -32,7 +32,7 @@
                 </tr>
                 {{#each customers}}
                  <tr>
-                     <td>{{@index}}</td>
+                     <td>{{math @index "+" 1}}</td>
                     <td><strong>{{this.Name}}</strong></td>
                     <td><img src="{{this.photo.path}}" alt="" width="100px"></td>
                 </tr>
