@@ -32,7 +32,7 @@
                 </tr>
                 {{#each customers}}
                  <tr>
-                     <td>{{@index}}</td>
+                     <td>{{math @index "+" 1}}</td>
                     <td>{{this.Name}}</td>
                     <td>{{this.Father}}</td>
                 </tr>
